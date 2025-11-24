@@ -1,0 +1,9 @@
+# Archivos de contraseñas y sales
+passwords.json
+salt.bin
+
+# Archivos de caché de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
