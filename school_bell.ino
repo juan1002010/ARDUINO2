@@ -32,32 +32,56 @@ const int LED_PIN = 5;
 const int SDA_PIN = 21;
 const int SCL_PIN = 22;
 
-// Variables globales
-WebServer server(80);
-WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "pool.ntp.org", -18000, 60000);
-
+// ========== ESTRUCTURAS CORREGIDAS PARA EEPROM ==========
+// Para evitar crashes y bootloops (Guru Meditation Error / LoadProhibited),
+// la estructura de Horario debe usar un arreglo de caracteres de tamaño fijo
+// ('char nombre[32]') en lugar de 'String' que usa memoria dinámica en el heap.
 struct Horario {
   int id;
-  String nombre;
+  char nombre[32];
   int hora;
   int minuto;
   int duracion;
   bool activo;
 };
 
+// Firma / Magic Number para detectar si la EEPROM ha sido inicializada
+// antes de cargar datos basura del chip de fábrica.
+struct ConfiguracionGlobal {
+  uint32_t magic;
+  bool sistemaActivo;
+  int numHorarios;
+};
+
+const uint32_t EEPROM_MAGIC = 0x5B110001; // Identificador único de nuestra configuración
+
+// Variables globales
 Horario horarios[20];
 int numHorarios = 0;
 bool sistemaActivo = true;
-unsigned long ultimoChequeo = 0;
+
+// Servidor Web y Cliente NTP
+WebServer server(80);
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org", -18000, 60000);
+
+// Control de tiempos y estados asíncronos (no bloqueantes)
 unsigned long ultimaActualizacionOLED = 0;
+int ultimoMinutoVerificado = -1; // Comprobación por cambio de minuto para máxima precisión
+
+bool timbreSonando = false;
+unsigned long tiempoInicioTimbre = 0;
+unsigned long duracionTimbreActual = 0;
 
 void setup() {
   Serial.begin(115200);
 
   pinMode(RELAY_PIN, OUTPUT);
   pinMode(LED_PIN, OUTPUT);
+
+  // Relé inactivo por defecto (nivel alto)
   digitalWrite(RELAY_PIN, HIGH);
+  // LED de estado apagado al iniciar
   digitalWrite(LED_PIN, LOW);
 
   Wire.begin(SDA_PIN, SCL_PIN);
@@ -69,7 +93,9 @@ void setup() {
 
   mostrarPantallaInicio();
 
-  EEPROM.begin(512);
+  // Aumentamos el espacio de EEPROM a 2048 bytes para alojar
+  // perfectamente los 20 horarios estructurados de tamaño fijo (~52 bytes cada uno)
+  EEPROM.begin(2048);
   cargarConfiguracion();
 
   WiFi.begin(ssid, password);
@@ -103,7 +129,7 @@ void setup() {
   server.begin();
   Serial.println("Servidor web iniciado");
 
-  digitalWrite(LED_PIN, HIGH);
+  digitalWrite(LED_PIN, HIGH); // Sistema encendido y listo
   mostrarSistemaListo();
   delay(2000);
 }
@@ -112,17 +138,34 @@ void loop() {
   server.handleClient();
   timeClient.update();
 
+  // --- CONTROL NO BLOQUEANTE DEL TIMBRE ---
+  if (timbreSonando) {
+    if (millis() - tiempoInicioTimbre >= duracionTimbreActual) {
+      digitalWrite(RELAY_PIN, HIGH); // Apagar relé
+      digitalWrite(LED_PIN, HIGH);   // Restaurar LED indicador (HIGH = Encendido / Listo)
+      timbreSonando = false;
+      Serial.println("Timbre finalizado de forma asincrona");
+      actualizarPantallaOLED(); // Restaurar de inmediato la pantalla normal del reloj
+    }
+  }
+
+  // Actualización del OLED cada segundo (solo si no está sonando el timbre)
   if (millis() - ultimaActualizacionOLED > 1000) {
     actualizarPantallaOLED();
     ultimaActualizacionOLED = millis();
   }
 
-  if (millis() - ultimoChequeo > 60000) {
+  // --- VERIFICACIÓN DE HORARIOS ULTRA PRECISA ---
+  // Se ejecuta exactamente una vez al cambiar el minuto actual.
+  // Esto previene que se omita el timbre si NTPClient actualiza el reloj,
+  // y elimina los retrasos acumulados de millis().
+  int minutoActual = timeClient.getMinutes();
+  if (minutoActual != ultimoMinutoVerificado) {
     verificarHorarios();
-    ultimoChequeo = millis();
+    ultimoMinutoVerificado = minutoActual;
   }
 
-  delay(100);
+  delay(10); // Evita saturar el CPU del ESP32
 }
 
 // ========== FUNCIONES PARA OLED ==========
@@ -182,6 +225,11 @@ void mostrarSistemaListo() {
 }
 
 void actualizarPantallaOLED() {
+  // Si el timbre está activo, no sobrescribimos el mensaje de timbre sonando
+  if (timbreSonando) {
+    return;
+  }
+
   display.clearDisplay();
 
   display.setTextSize(1);
@@ -199,11 +247,15 @@ void actualizarPantallaOLED() {
   display.setCursor(0, 35);
   time_t rawtime = timeClient.getEpochTime();
   struct tm * timeinfo = localtime(&rawtime);
-  display.print(timeinfo->tm_mday);
-  display.print(F("/"));
-  display.print(timeinfo->tm_mon + 1);
-  display.print(F("/"));
-  display.println(timeinfo->tm_year + 1900);
+  if (timeinfo) {
+    display.print(timeinfo->tm_mday);
+    display.print(F("/"));
+    display.print(timeinfo->tm_mon + 1);
+    display.print(F("/"));
+    display.println(timeinfo->tm_year + 1900);
+  } else {
+    display.println(F("--/--/----"));
+  }
 
   display.setCursor(0, 45);
   if (sistemaActivo) {
@@ -329,10 +381,10 @@ void handleRoot() {
   html += "<div class='section'>";
   html += "<h2>Estado de Pantalla OLED</h2>";
   html += "<div class='oled-info'>";
-  html += "<p><strong>Pantalla:</strong> 0.9 OLED 128x64 - ACTIVA</p>";
+  html += "<p><strong>Pantalla:</strong> 0.96\" OLED 128x64 - ACTIVA (SSD1306)</p>";
   html += "<p><strong>I2C:</strong> SDA=GPIO21, SCL=GPIO22</p>";
   html += "<p><strong>Mostrando:</strong> Hora actual, fecha, estado del sistema y proximo timbre</p>";
-  html += "<p><strong>Actualizacion:</strong> Cada segundo automaticamente</p>";
+  html += "<p><strong>Actualizacion:</strong> Cada segundo de forma asíncrona</p>";
   html += "</div>";
   html += "</div>";
 
@@ -395,7 +447,7 @@ void handleRoot() {
   html += "  if (serverTime.h >= 24) { serverTime.h = 0; }";
   html += "  formatTime(serverTime.h, serverTime.m, serverTime.s);";
   html += "  const now = new Date().getTime();";
-  html += "  if(now - lastSync > 30000) {"; // Resync every 30 seconds
+  html += "  if(now - lastSync > 30000) {"; // Resync cada 30 segundos
   html += "     actualizarReloj();";
   html += "  } else {";
   html += "     clockTimeout = setTimeout(tick, 1000);";
@@ -411,8 +463,8 @@ void handleRoot() {
   html += "    lastSync = new Date().getTime();";
   html += "    clockTimeout = setTimeout(tick, 1000);";
   html += "  }).catch(e => {";
-  html += "    console.error('Failed to fetch time', e);";
-  html += "    clockTimeout = setTimeout(actualizarReloj, 5000);"; // Retry on failure
+  html += "    console.error('Error al sincronizar reloj', e);";
+  html += "    clockTimeout = setTimeout(actualizarReloj, 5000);"; // Reintento por fallo
   html += "  });";
   html += "}";
 
@@ -471,15 +523,26 @@ void handleRoot() {
   server.send(200, "text/html", html);
 }
 
-// Resto de las funciones del servidor...
+// ========== ENDPOINTS DE LA API ==========
+
 void handleGetHorarios() {
+  // Directivas de compatibilidad multiplataforma de ArduinoJson (v6 y v7)
+  #if ARDUINOJSON_VERSION_MAJOR >= 7
   JsonDocument doc;
+  #else
+  DynamicJsonDocument doc(2048);
+  #endif
+
   JsonArray array = doc.to<JsonArray>();
 
   for (int i = 0; i < numHorarios; i++) {
+    #if ARDUINOJSON_VERSION_MAJOR >= 7
     JsonObject obj = array.add<JsonObject>();
+    #else
+    JsonObject obj = array.createNestedObject();
+    #endif
     obj["id"] = horarios[i].id;
-    obj["nombre"] = horarios[i].nombre;
+    obj["nombre"] = String(horarios[i].nombre);
     obj["hora"] = horarios[i].hora;
     obj["minuto"] = horarios[i].minuto;
     obj["duracion"] = horarios[i].duracion;
@@ -497,14 +560,24 @@ void handleAddHorario() {
     return;
   }
 
+  #if ARDUINOJSON_VERSION_MAJOR >= 7
   JsonDocument doc;
-  deserializeJson(doc, server.arg("plain"));
+  #else
+  DynamicJsonDocument doc(1024);
+  #endif
+
+  DeserializationError error = deserializeJson(doc, server.arg("plain"));
+  if (error) {
+    server.send(400, "text/plain", "JSON invalido");
+    return;
+  }
 
   horarios[numHorarios].id = numHorarios;
-  horarios[numHorarios].nombre = doc["nombre"].as<String>();
-  horarios[numHorarios].hora = doc["hora"];
-  horarios[numHorarios].minuto = doc["minuto"];
-  horarios[numHorarios].duracion = doc["duracion"];
+  // strlcpy realiza una copia segura basada en límites de bytes
+  strlcpy(horarios[numHorarios].nombre, doc["nombre"] | "Timbre", sizeof(horarios[numHorarios].nombre));
+  horarios[numHorarios].hora = doc["hora"] | 0;
+  horarios[numHorarios].minuto = doc["minuto"] | 0;
+  horarios[numHorarios].duracion = doc["duracion"] | 5;
   horarios[numHorarios].activo = true;
 
   numHorarios++;
@@ -514,8 +587,19 @@ void handleAddHorario() {
 }
 
 void handleDeleteHorario() {
+  if (!server.hasArg("id")) {
+    server.send(400, "text/plain", "ID requerido");
+    return;
+  }
+
   int id = server.arg("id").toInt();
 
+  if (id < 0 || id >= numHorarios) {
+    server.send(400, "text/plain", "ID invalido");
+    return;
+  }
+
+  // Desplazar elementos a la izquierda y re-indexar IDs
   for (int i = id; i < numHorarios - 1; i++) {
     horarios[i] = horarios[i + 1];
     horarios[i].id = i;
@@ -528,7 +612,12 @@ void handleDeleteHorario() {
 }
 
 void handleGetEstado() {
+  #if ARDUINOJSON_VERSION_MAJOR >= 7
   JsonDocument doc;
+  #else
+  StaticJsonDocument<256> doc;
+  #endif
+
   doc["activo"] = sistemaActivo;
   doc["numHorarios"] = numHorarios;
 
@@ -540,7 +629,12 @@ void handleGetEstado() {
 void handleGetTiempo() {
   timeClient.update();
 
+  #if ARDUINOJSON_VERSION_MAJOR >= 7
   JsonDocument doc;
+  #else
+  StaticJsonDocument<512> doc;
+  #endif
+
   doc["hora"] = timeClient.getFormattedTime();
   doc["h"] = timeClient.getHours();
   doc["m"] = timeClient.getMinutes();
@@ -553,8 +647,13 @@ void handleGetTiempo() {
   String meses[] = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
                    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
 
-  String fecha = dias[timeinfo->tm_wday] + ", " + String(timeinfo->tm_mday) +
-                " de " + meses[timeinfo->tm_mon] + " de " + String(timeinfo->tm_year + 1900);
+  String fecha = "";
+  if (timeinfo) {
+    fecha = dias[timeinfo->tm_wday] + ", " + String(timeinfo->tm_mday) +
+                  " de " + meses[timeinfo->tm_mon] + " de " + String(timeinfo->tm_year + 1900);
+  } else {
+    fecha = "Error al obtener fecha";
+  }
   doc["fecha"] = fecha;
 
   String response;
@@ -569,7 +668,7 @@ void handleToggleSystem() {
 }
 
 void handleManualBell() {
-  Serial.println("Timbre activado manually");
+  Serial.println("Timbre activado manualmente");
   mostrarTimbreActivado("Manual", 5);
   activarTimbre(5);
   server.send(200, "text/plain", "Timbre activado");
@@ -588,9 +687,10 @@ void verificarHorarios() {
         horarios[i].hora == horaActual &&
         horarios[i].minuto == minutoActual) {
 
-      Serial.println("Activando timbre: " + horarios[i].nombre);
-      mostrarTimbreActivado(horarios[i].nombre, horarios[i].duracion);
+      Serial.println("Activando timbre programado: " + String(horarios[i].nombre));
+      mostrarTimbreActivado(String(horarios[i].nombre), horarios[i].duracion);
       activarTimbre(horarios[i].duracion);
+      break; // Detener chequeo para este minuto una vez activado
     }
   }
 }
@@ -598,54 +698,53 @@ void verificarHorarios() {
 void activarTimbre(int duracion) {
   Serial.println("Timbre activado por " + String(duracion) + " segundos");
 
-  digitalWrite(RELAY_PIN, LOW);
-  digitalWrite(LED_PIN, LOW);
+  digitalWrite(RELAY_PIN, LOW); // Activar relé (nivel bajo)
+  digitalWrite(LED_PIN, LOW);   // Apagar LED indicador durante activación
 
-  delay(duracion * 1000);
-
-  digitalWrite(RELAY_PIN, HIGH);
-  digitalWrite(LED_PIN, HIGH);
+  timbreSonando = true;
+  tiempoInicioTimbre = millis();
+  duracionTimbreActual = (unsigned long)duracion * 1000;
 }
 
 void cargarConfiguracion() {
-  EEPROM.get(0, sistemaActivo);
-  EEPROM.get(4, numHorarios);
+  ConfiguracionGlobal config;
+  EEPROM.get(0, config);
 
-  if (numHorarios > 20) numHorarios = 0;
+  if (config.magic == EEPROM_MAGIC) {
+    sistemaActivo = config.sistemaActivo;
+    numHorarios = config.numHorarios;
 
-  for (int i = 0; i < numHorarios; i++) {
-    int addr = 8 + (i * sizeof(Horario));
-    EEPROM.get(addr, horarios[i]);
+    // Verificación defensiva contra datos corruptos
+    if (numHorarios < 0 || numHorarios > 20) {
+      numHorarios = 0;
+    }
+
+    for (int i = 0; i < numHorarios; i++) {
+      int addr = sizeof(ConfiguracionGlobal) + (i * sizeof(Horario));
+      EEPROM.get(addr, horarios[i]);
+    }
+    Serial.println("Configuracion cargada exitosamente desde la EEPROM.");
+  } else {
+    Serial.println("Firma EEPROM no coincide. Configurando valores de fabrica...");
+    sistemaActivo = true;
+    numHorarios = 0;
+    guardarConfiguracion();
   }
 }
 
 void guardarConfiguracion() {
-  EEPROM.put(0, sistemaActivo);
-  EEPROM.put(4, numHorarios);
+  ConfiguracionGlobal config;
+  config.magic = EEPROM_MAGIC;
+  config.sistemaActivo = sistemaActivo;
+  config.numHorarios = numHorarios;
+
+  EEPROM.put(0, config);
 
   for (int i = 0; i < numHorarios; i++) {
-    int addr = 8 + (i * sizeof(Horario));
+    int addr = sizeof(ConfiguracionGlobal) + (i * sizeof(Horario));
     EEPROM.put(addr, horarios[i]);
   }
 
   EEPROM.commit();
+  Serial.println("Configuracion sincronizada y guardada en EEPROM.");
 }
-
-/*
-========== FUNCIONES INCLUIDAS ==========
-- Pantalla OLED completamente funcional
-- Servidor web con interfaz completa
-- Gestion de horarios
-- Control manual del timbre
-- Almacenamiento en EEPROM
-- Sincronizacion de tiempo NTP
-- Reloj en tiempo real en la interfaz web
-
-CONFIGURACION IMPORTANTE:
-1. Cambia ssid y password por los de tu red WiFi
-2. Instala todas las librerias necesarias
-3. Verifica las conexiones del OLED
-4. Conecta el relay al pin 2 y LED al pin 5
-
-Ahora el codigo deberia compilar sin errores!
-*/
