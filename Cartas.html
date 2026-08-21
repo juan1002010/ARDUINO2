@@ -3,249 +3,493 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Estudio de Cartas de Amor Personalizables — Studio v7</title>
+<title>Estudio de Cartas de Amor — Luxury Letter Studio v8</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&family=Parisienne&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Tangerine:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,400&family=Cinzel+Decorative:wght@600;700&family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Dancing+Script:wght@600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&family=Parisienne&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Satisfy&family=Tangerine:wght@700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#141110;color:#e9e5dd;font:14px 'Montserrat',Verdana,sans-serif;padding:20px}
-.app{display:flex;gap:20px;flex-wrap:wrap;max-width:1600px;margin:0 auto}
-.editor{flex:1 1 380px;min-width:320px}
-.preview-col{flex:2 1 620px;min-width:320px;overflow:auto}
-h1{font-size:20px;margin:0 0 12px;color:#f3efe7;display:flex;align-items:center;gap:8px}
-textarea{width:100%;min-height:260px;background:#1d1915;color:#e9e5dd;border:1px solid #3a342c;border-radius:10px;padding:12px;font:13px/1.6 'Montserrat',Verdana,sans-serif;resize:vertical;outline:none}
-textarea:focus{border-color:#a8853f}
-input[type=text]{background:#1d1915;color:#e9e5dd;border:1px solid #3a342c;border-radius:8px;padding:6px 9px;font:12px Montserrat,sans-serif;width:140px;outline:none}
-input[type=text]:focus{border-color:#a8853f}
-input[type=color]{width:34px;height:28px;border:1px solid #4a443a;border-radius:6px;background:#1d1915;padding:2px;cursor:pointer}
-input[type=range]{width:90px;accent-color:#a8853f}
-.controls{display:flex;flex-direction:column;gap:8px;margin-top:10px}
-.row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
-label{font-size:11px;color:#b7afa3;user-select:none}
-button,select{background:#2e2a24;border:1px solid #4a443a;color:#e9e5dd;border-radius:8px;padding:6px 10px;font:12px Montserrat,sans-serif;cursor:pointer;transition:all .15s ease}
-button:hover,select:hover{background:#3a352c;border-color:#d8c9a8}
-button.act{background:#4a443a;border-color:#d8c9a8;font-weight:600}
-.swatch{width:26px;height:26px;border-radius:50%;border:2px solid #4a443a;padding:0;cursor:pointer;transition:transform .15s ease}
-.swatch:hover{border-color:#d8c9a8;transform:scale(1.1)}
-details{background:#1d1915;border:1px solid #3a342c;border-radius:10px;padding:8px 12px}
-summary{cursor:pointer;font-size:13px;color:#d8c9a8;outline:none;font-weight:500;user-select:none}
-.hint{font-size:11px;color:#8f887c;line-height:1.6}
-#status{padding:9px 13px;border-radius:8px;background:#1d1915;border:1px solid #3a342c;font-size:12px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
-#status.ok{color:#9fd08f;border-color:#4a7a3a;background:#1c2517}
-#status.err{color:#e08e8e;border-color:#7a3a3a;background:#251717}
-
-/* ============ PÁGINA DE PREVISUALIZACIÓN ============ */
-.page{position:relative;margin:0 auto;transition:all .2s ease;overflow:hidden}
-.tex{position:absolute;inset:0;pointer-events:none;
- background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23p)' opacity='0.07'/%3E%3C/svg%3E"),
- radial-gradient(ellipse at 50% 40%, transparent 58%, rgba(0,0,0,.09) 100%);
+:root {
+  --bg-dark: #0f0d0b;
+  --panel-bg: rgba(26, 22, 18, 0.88);
+  --panel-border: #3d3326;
+  --gold-primary: #d4af37;
+  --gold-accent: #c5a059;
+  --gold-hover: #e5c158;
+  --text-main: #eae5dc;
+  --text-muted: #a3998b;
+  --radius-lg: 14px;
+  --radius-md: 9px;
+  --shadow-lux: 0 25px 80px rgba(0, 0, 0, 0.65);
 }
-#bgCustomLayer{position:absolute;inset:0;pointer-events:none;background-size:cover;background-position:center}
-#viewCarta{position:absolute;inset:0;padding:106px 96px 160px}
-#viewPortada{position:absolute;inset:0;display:none}
-.frame,.frame2{position:absolute;pointer-events:none}
-.frame{inset:26px;border:1.5px solid}
-.frame2{inset:34px;border:1px solid}
-.corner{position:absolute;width:84px;height:84px;pointer-events:none}
-.c-tl{top:36px;left:36px}.c-tr{top:36px;right:36px;transform:rotate(90deg)}
-.c-br{bottom:36px;right:36px;transform:rotate(180deg)}.c-bl{bottom:36px;left:36px;transform:rotate(270deg)}
-.branch{position:absolute;pointer-events:none}
-.bb{left:46px;bottom:52px;width:148px;height:270px;opacity:.9}
-.bt{right:50px;top:46px;width:118px;height:215px;transform:rotate(180deg);opacity:.85}
-.floral-decor{position:absolute;pointer-events:none}
-#decoTopRight{top:20px;right:20px;width:210px;height:160px}
-#decoBottomLeft{bottom:10px;left:15px;width:280px;height:320px}
-#sprig{position:absolute;bottom:62px;left:50%;margin-left:-80px;width:160px;height:46px}
-.seal{position:absolute;right:88px;bottom:80px;width:118px;height:118px}
-.sealCov{right:auto;left:50%;margin-left:-45px;bottom:58px;width:90px;height:90px}
-.watermark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;user-select:none;transform:rotate(-16deg)}
 
-/* ============ CARTA Y FORMATO DE TEXTO ============ */
-#carta{position:relative}
-#carta h2{font-weight:600;text-transform:uppercase;font-size:30px;text-align:center;margin:4px 0 8px}
-.script{font-size:30px;text-align:center;margin:0 0 10px}
-.divider{display:flex;align-items:center;gap:12px;width:62%;margin:18px auto 32px}
-.divider i{flex:1;height:1px}
-.divider b{width:9px;height:9px;transform:rotate(45deg);border:1px solid;flex:none}
-#carta p{font-size:19px;margin:0 0 1.15em}
-#carta ul.carta-list{margin:0 0 1.15em;padding-left:26px}
-#carta ul.carta-list li{margin:0.4em 0}
-.cap{float:left;font-size:64px;line-height:.8;margin:8px 12px 0 0}
-.sig{font-size:34px;text-align:right;margin:16px 80px 2px 0;line-height:1.45}
-.foot{margin-top:36px;text-align:center;font-weight:600;font-size:13px;letter-spacing:.28em;text-transform:uppercase}
-#carta hr{border:none;border-top:1px solid;margin:26px 0}
-mark{background-color:rgba(216,201,168,.3);color:inherit;padding:0 3px;border-radius:2px}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg-dark);
+  background-image: radial-gradient(circle at 50% 0%, #211a14 0%, #0f0d0b 75%);
+  color: var(--text-main);
+  font-family: 'Montserrat', -apple-system, sans-serif;
+  padding: 24px 16px;
+  min-height: 100vh;
+}
 
-/* ============ PORTADA ============ */
-.stampBox{position:absolute;top:56px;right:64px;width:112px;border:1.5px dashed;padding:8px 6px 6px;text-align:center}
-.stampBox svg{width:86px;height:82px;display:block;margin:0 auto}
-.stampTxt{font:10px Georgia,serif;letter-spacing:2px;margin-top:6px}
-.postmark{position:absolute;top:86px;right:150px;width:150px;height:112px;opacity:.85}
-.covCenter{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 90px;text-align:center}
-.covPara{font-size:30px}
-.covName{font-size:54px;line-height:1.15;margin:6px 0 2px}
-.covCenter .divider{width:60%;margin:18px auto 22px}
-.covDe{margin-top:0}
+header.app-header {
+  max-width: 1650px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--panel-border);
+  padding-bottom: 16px;
+}
+header h1 {
+  margin: 0;
+  font-family: 'Cinzel Decorative', Georgia, serif;
+  font-size: 22px;
+  color: #f3efe7;
+  letter-spacing: 1.5px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+header h1 span {
+  font-size: 13px;
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(135deg, #c5a059, #e5c158);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
 
-/* IMPRESIÓN DIRECTA */
-@media print{
- body{background:#fff !important;color:#000 !important;padding:0 !important}
- .editor,h1,#status,.hint{display:none !important}
- .app{display:block !important;max-width:none !important}
- .preview-col{overflow:visible !important;width:100% !important}
- .page{box-shadow:none !important;margin:0 auto !important;page-break-after:always}
+.app {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  max-width: 1650px;
+  margin: 0 auto;
+}
+.editor {
+  flex: 1 1 400px;
+  min-width: 330px;
+}
+.preview-col {
+  flex: 2 1 650px;
+  min-width: 330px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* PANELS & INPUTS */
+.panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+textarea#texto {
+  width: 100%;
+  min-height: 280px;
+  background: #15120e;
+  color: var(--text-main);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  font: 14px/1.65 'Montserrat', sans-serif;
+  resize: vertical;
+  outline: none;
+  transition: border-color .2s;
+}
+textarea#texto:focus {
+  border-color: var(--gold-accent);
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.row:last-child { margin-bottom: 0; }
+
+label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 500;
+  user-select: none;
+}
+
+button, select, input[type=text] {
+  background: #231d17;
+  border: 1px solid #453a2d;
+  color: var(--text-main);
+  border-radius: 7px;
+  padding: 7px 11px;
+  font: 12px 'Montserrat', sans-serif;
+  outline: none;
+  cursor: pointer;
+  transition: all .18s ease;
+}
+button:hover, select:hover {
+  background: #2e261f;
+  border-color: var(--gold-accent);
+}
+button.act {
+  background: linear-gradient(135deg, #433626, #2d2419);
+  border-color: var(--gold-primary);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 0 12px rgba(197, 160, 89, 0.25);
+}
+
+input[type=color] {
+  width: 32px;
+  height: 28px;
+  border: 1px solid #453a2d;
+  border-radius: 6px;
+  background: #15120e;
+  padding: 2px;
+  cursor: pointer;
+}
+input[type=range] {
+  accent-color: var(--gold-accent);
+  cursor: pointer;
+}
+
+.swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #453a2d;
+  padding: 0;
+  cursor: pointer;
+  transition: transform .2s ease, border-color .2s ease;
+}
+.swatch:hover {
+  border-color: var(--gold-primary);
+  transform: scale(1.15);
+}
+
+details {
+  background: #17130f;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  margin-bottom: 10px;
+}
+summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--gold-accent);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  user-select: none;
+  outline: none;
+}
+
+#status {
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background: #17130f;
+  border: 1px solid var(--panel-border);
+  font-size: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#status.ok { color: #a3e098; border-color: #3b6631; background: #132110; }
+#status.err { color: #f09b9b; border-color: #703333; background: #261212; }
+
+/* ============ PREVIEW STYLING ============ */
+.page {
+  position: relative;
+  margin: 0 auto;
+  box-shadow: var(--shadow-lux);
+  transition: all .25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  background-color: #f6f1e6;
+}
+
+.tex {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23p)' opacity='0.08'/%3E%3C/svg%3E"),
+                    radial-gradient(ellipse at 50% 40%, transparent 58%, rgba(0,0,0,.12) 100%);
+}
+#bgCustomLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+}
+
+#viewCarta {
+  position: absolute;
+  inset: 0;
+  padding: 106px 92px 160px;
+}
+#viewPortada {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.frame, .frame2 { position: absolute; pointer-events: none; }
+.frame { inset: 26px; border: 1.5px solid; }
+.frame2 { inset: 34px; border: 1px solid; }
+
+.corner { position: absolute; width: 84px; height: 84px; pointer-events: none; }
+.c-tl { top: 36px; left: 36px; }
+.c-tr { top: 36px; right: 36px; transform: rotate(90deg); }
+.c-br { bottom: 36px; right: 36px; transform: rotate(180deg); }
+.c-bl { bottom: 36px; left: 36px; transform: rotate(270deg); }
+
+.branch { position: absolute; pointer-events: none; }
+.bb { left: 46px; bottom: 52px; width: 148px; height: 270px; opacity: .9; }
+.bt { right: 50px; top: 46px; width: 118px; height: 215px; transform: rotate(180deg); opacity: .85; }
+
+.floral-decor { position: absolute; pointer-events: none; }
+#decoTopRight { top: 20px; right: 20px; width: 220px; height: 170px; }
+#decoBottomLeft { bottom: 10px; left: 15px; width: 290px; height: 330px; }
+
+#sprig { position: absolute; bottom: 62px; left: 50%; margin-left: -80px; width: 160px; height: 46px; }
+.seal { position: absolute; right: 88px; bottom: 80px; width: 118px; height: 118px; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3)); }
+.sealCov { right: auto; left: 50%; margin-left: -45px; bottom: 58px; width: 90px; height: 90px; }
+.watermark { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; user-select: none; transform: rotate(-16deg); }
+
+/* CARTA */
+#carta { position: relative; }
+#carta h2 { font-weight: 600; text-transform: uppercase; font-size: 32px; text-align: center; margin: 4px 0 8px; }
+.script { font-size: 32px; text-align: center; margin: 0 0 12px; }
+.divider { display: flex; align-items: center; gap: 14px; width: 62%; margin: 18px auto 32px; }
+.divider i { flex: 1; height: 1px; }
+.divider b { width: 9px; height: 9px; transform: rotate(45deg); border: 1px solid; flex: none; }
+#carta p { font-size: 19px; margin: 0 0 1.15em; }
+#carta ul.carta-list { margin: 0 0 1.15em; padding-left: 28px; }
+#carta ul.carta-list li { margin: 0.4em 0; }
+.cap { float: left; font-size: 66px; line-height: .8; margin: 8px 12px 0 0; }
+.sig { font-size: 36px; text-align: right; margin: 20px 70px 2px 0; line-height: 1.45; }
+.foot { margin-top: 36px; text-align: center; font-weight: 600; font-size: 13px; letter-spacing: .28em; text-transform: uppercase; }
+#carta hr { border: none; border-top: 1px solid; margin: 28px 0; }
+mark { background-color: rgba(212, 175, 55, 0.28); color: inherit; padding: 0 3px; border-radius: 2px; }
+
+/* PORTADA */
+.stampBox { position: absolute; top: 56px; right: 64px; width: 112px; border: 1.5px dashed; padding: 8px 6px 6px; text-align: center; }
+.stampBox svg { width: 86px; height: 82px; display: block; margin: 0 auto; }
+.stampTxt { font: 10px 'Cinzel', Georgia, serif; letter-spacing: 2px; margin-top: 6px; }
+.postmark { position: absolute; top: 86px; right: 150px; width: 150px; height: 112px; opacity: .85; }
+.covCenter { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 90px; text-align: center; }
+.covPara { font-size: 32px; }
+.covName { font-size: 54px; line-height: 1.15; margin: 6px 0 2px; }
+.covCenter .divider { width: 60%; margin: 18px auto 22px; }
+.covDe { margin-top: 0; }
+
+@media print {
+  body { background: #fff !important; color: #000 !important; padding: 0 !important; }
+  header, .editor, #status { display: none !important; }
+  .app { display: block !important; max-width: none !important; }
+  .preview-col { overflow: visible !important; width: 100% !important; }
+  .page { box-shadow: none !important; margin: 0 auto !important; page-break-after: always; }
 }
 </style>
 </head>
 <body>
-<h1>Estudio de Cartas de Amor 🖋</h1>
+
+<header class="app-header">
+  <h1>Estudio de Cartas de Amor 🖋 <span>Luxury Edition</span></h1>
+</header>
+
 <div class="app">
  <div class="editor">
-  <div id="status"><span>⏳ Verificando entorno…</span></div>
-  <textarea id="texto" spellcheck="false"></textarea>
-  <div class="controls">
+  <div id="status"><span>⏳ Iniciando estudio...</span></div>
+
+  <div class="panel">
    <div class="row">
     <button id="mCarta" class="act">✉ Carta</button>
     <button id="mPortada">🎁 Portada</button>
+    <label style="margin-left:auto">Plantilla Rápida</label>
+    <select id="tmplSel" style="max-width:140px">
+     <option value="">— Elegir Carta —</option>
+     <option value="aniversario">Aniversario Especial</option>
+     <option value="declaracion">Declaración de Amor</option>
+     <option value="distancia">Carta a Distancia</option>
+     <option value="promesa">Promesa de Futuro</option>
+     <option value="reconciliacion">Reconciliación</option>
+    </select>
+   </div>
+
+   <textarea id="texto" spellcheck="false"></textarea>
+
+   <div class="row" style="margin-top:10px">
     <label>Vista</label>
     <select id="zoomSel">
      <option value="1">100%</option>
-     <option value="0.75">75%</option>
+     <option value="0.85">85%</option>
+     <option value="0.7">70%</option>
      <option value="0.5">50%</option>
     </select>
-    <button id="bRnd" title="Combinación armoniosa al azar">🎲 Azar</button>
-    <button id="bCopy" title="Copiar texto al portapapeles">📋 Copiar</button>
-    <button id="bClear" title="Limpiar borrador">🗑 Limpiar</button>
-    <span id="count" class="hint"></span>
+    <button id="bRnd" title="Generar combinación armoniosa">🎲 Azar</button>
+    <button id="bCopy" title="Copiar texto borrador">📋 Copiar</button>
+    <button id="bClear" title="Limpiar texto">🗑 Limpiar</button>
+    <span id="count" style="margin-left:auto;font-size:11px;color:var(--text-muted)"></span>
    </div>
+  </div>
 
-   <details open>
-    <summary>🎨 Diseño, Colores y Papel</summary>
-    <div class="row" style="margin-top:8px">
-     <label>Presets curados:</label>
-     <button class="swatch" data-p="marfil" style="background:#f6f1e6" title="Marfil y oro"></button>
-     <button class="swatch" data-p="noche" style="background:#161d26" title="Noche y oro"></button>
-     <button class="swatch" data-p="rosa" style="background:#f7edea" title="Rosa empolvado"></button>
-     <button class="swatch" data-p="salvia" style="background:#eef0e7" title="Verde salvia"></button>
-     <button class="swatch" data-p="lavanda" style="background:#f2eef7" title="Lavanda romántica"></button>
-     <button class="swatch" data-p="tinta" style="background:#eef1f4" title="Azul tinta"></button>
-    </div>
-    <div class="row">
-     <label>Papel</label><input type="color" id="cPaper" value="#f6f1e6">
-     <label>Texto</label><input type="color" id="cInk" value="#453a2b">
-     <label>Oro/Acento</label><input type="color" id="cAccent" value="#a8853f">
-     <label>Hojas</label><input type="color" id="cLeaf" value="#6b7052">
-     <label>Lacre</label><input type="color" id="cSeal" value="#8c2f2b">
-    </div>
-    <div class="row">
-     <label>Tipografía</label>
-     <select id="fSel">
-      <option value="clasico">Clásica (Cormorant + Garamond)</option>
-      <option value="romantico">Romántica (Playfair + Lora)</option>
-      <option value="moderno">Moderna (Montserrat)</option>
-      <option value="imperial">Imperial (Cinzel + Tangerine)</option>
-     </select>
-     <label>Marco</label>
-     <select id="frmSel">
-      <option value="doble">Doble</option>
-      <option value="sencilla">Sencillo</option>
-      <option value="ninguna">Sin marco</option>
-     </select>
-    </div>
-    <div class="row">
-     <label>Formato</label>
-     <select id="fmtSel">
-      <option value="r45">Retrato 4:5</option>
-      <option value="a4">Documento A4</option>
-      <option value="sq">Cuadrado (1:1)</option>
-      <option value="st">Historia (9:16)</option>
-     </select>
-     <label>Alineación</label>
-     <select id="alSel">
-      <option value="justify">Justificada</option>
-      <option value="left">Izquierda</option>
-      <option value="center">Centro</option>
-     </select>
-    </div>
-    <div class="row">
-     <label>Letra</label><input type="range" id="fs" min="15" max="24" value="19">
-     <label>Interlineado</label><input type="range" id="lh" min="15" max="24" value="19">
-     <label>Espaciado</label><input type="range" id="ls" min="0" max="15" value="2">
-    </div>
-    <div class="row">
-     <label><input type="checkbox" id="tBranch" checked> Ramas</label>
-     <label><input type="checkbox" id="tFloral" checked> Flores SVG</label>
-     <label><input type="checkbox" id="tCorner" checked> Esquinas</label>
-     <label><input type="checkbox" id="tSeal" checked> Sello</label>
-     <label><input type="checkbox" id="tWm" checked> Marca agua</label>
-     <label><input type="checkbox" id="tTex" checked> Textura</label>
-    </div>
-    <div class="row">
-     <label>Imagen Fondo:</label>
-     <button id="btnBgUpload">📷 Subir imagen</button>
-     <input type="file" id="bgImgFile" accept="image/*" style="display:none">
-     <button id="btnBgClear">🗑 Quitar</button>
-     <label>Opacidad</label>
-     <input type="range" id="bgImgOp" min="10" max="100" value="100">
-    </div>
-    <div class="row">
-     <label>Marca agua</label><input type="text" id="wmTxt" value="Amor" style="width:80px">
-     <label>Opacidad</label><input type="range" id="wmOp" min="0" max="15" value="5">
-    </div>
-   </details>
+  <details open>
+   <summary>🎨 Paletas y Papeles de Lujo</summary>
+   <div class="row" style="margin-top:10px">
+    <label>Colecciones:</label>
+    <button class="swatch" data-p="marfil" style="background:#f6f1e6" title="Marfil & Oro Clásico"></button>
+    <button class="swatch" data-p="noche" style="background:#141b24" title="Terciopelo Noche & Oro"></button>
+    <button class="swatch" data-p="rosa" style="background:#f8ecea" title="Seda Rosa & Granate"></button>
+    <button class="swatch" data-p="salvia" style="background:#edf0e6" title="Verde Salvia Botánico"></button>
+    <button class="swatch" data-p="lavanda" style="background:#f3eef7" title="Lavanda Imperial"></button>
+    <button class="swatch" data-p="esmeralda" style="background:#0e201b" title="Esmeralda & Oro Real"></button>
+    <button class="swatch" data-p="sepia" style="background:#f2e4c9" title="Papiro Antiguo"></button>
+   </div>
+   <div class="row">
+    <label>Papel</label><input type="color" id="cPaper" value="#f6f1e6">
+    <label>Tinta</label><input type="color" id="cInk" value="#433628">
+    <label>Oro/Acento</label><input type="color" id="cAccent" value="#c5a059">
+    <label>Hojas</label><input type="color" id="cLeaf" value="#6b7052">
+    <label>Lacre</label><input type="color" id="cSeal" value="#8c2f2b">
+   </div>
+   <div class="row">
+    <label>Título</label>
+    <select id="fTitle">
+     <option value="cinzel">Cinzel Decorative</option>
+     <option value="cormorant">Cormorant Garamond</option>
+     <option value="playfair">Playfair Display</option>
+     <option value="bodoni">Bodoni Moda</option>
+    </select>
+    <label>Cuerpo</label>
+    <select id="fBody">
+     <option value="garamond">EB Garamond</option>
+     <option value="lora">Lora</option>
+     <option value="montserrat">Montserrat</option>
+    </select>
+   </div>
+   <div class="row">
+    <label>Firma</label>
+    <select id="fScript">
+     <option value="alex">Alex Brush</option>
+     <option value="vibes">Great Vibes</option>
+     <option value="dancing">Dancing Script</option>
+     <option value="satisfy">Satisfy</option>
+     <option value="parisienne">Parisienne</option>
+    </select>
+    <label>Marco</label>
+    <select id="frmSel">
+     <option value="doble">Doble Real</option>
+     <option value="sencilla">Fino Sencillo</option>
+     <option value="ninguna">Sin marco</option>
+    </select>
+   </div>
+   <div class="row">
+    <label>Formato</label>
+    <select id="fmtSel">
+     <option value="r45">Retrato 4:5</option>
+     <option value="a4">Documento A4</option>
+     <option value="sq">Cuadrado (1:1)</option>
+     <option value="st">Historia (9:16)</option>
+    </select>
+    <label>Alineación</label>
+    <select id="alSel">
+     <option value="justify">Justificada</option>
+     <option value="left">Izquierda</option>
+     <option value="center">Centro</option>
+    </select>
+   </div>
+   <div class="row">
+    <label>Tamaño</label><input type="range" id="fs" min="15" max="25" value="19">
+    <label>Interlineado</label><input type="range" id="lh" min="15" max="25" value="19">
+    <label>Espacio</label><input type="range" id="ls" min="0" max="15" value="2">
+   </div>
+   <div class="row">
+    <label><input type="checkbox" id="tBranch" checked> Ramas</label>
+    <label><input type="checkbox" id="tFloral" checked> Flores SVG</label>
+    <label><input type="checkbox" id="tCorner" checked> Esquinas</label>
+    <label><input type="checkbox" id="tSeal" checked> Sello</label>
+    <label><input type="checkbox" id="tWm" checked> Marca agua</label>
+    <label><input type="checkbox" id="tTex" checked> Textura</label>
+   </div>
+   <div class="row">
+    <label>Fondo:</label>
+    <button id="btnBgUpload">📷 Subir imagen</button>
+    <input type="file" id="bgImgFile" accept="image/*" style="display:none">
+    <button id="btnBgClear">🗑 Quitar</button>
+    <label>Opacidad</label><input type="range" id="bgImgOp" min="10" max="100" value="100">
+   </div>
+   <div class="row">
+    <label>Marca agua</label><input type="text" id="wmTxt" value="Amor Eterno" style="width:110px">
+    <label>Opacidad</label><input type="range" id="wmOp" min="0" max="15" value="5">
+   </div>
+  </details>
 
-   <details>
-    <summary>💍 Sello de Lacre y Portada</summary>
-    <div class="row" style="margin-top:8px">
-     <label>Diseño Sello</label>
-     <select id="sealSel">
-      <option value="heart">Corazón</option>
-      <option value="ini">Iniciales / Monograma</option>
-      <option value="rose">Rosa Romántica</option>
-      <option value="ring">Anillos de Boda</option>
-     </select>
-     <input type="text" id="ini" maxlength="4" placeholder="JM" style="width:60px" title="Iniciales para el sello">
-    </div>
-    <div class="row">
-     <label>Para</label><input type="text" id="covPara" placeholder="El amor de mi vida">
-     <label>De</label><input type="text" id="covDe" placeholder="Tu persona favorita">
-    </div>
-   </details>
+  <details>
+   <summary>💍 Sello de Lacre Real y Portada</summary>
+   <div class="row" style="margin-top:10px">
+    <label>Diseño Sello</label>
+    <select id="sealSel">
+     <option value="rose">Rosa Imperial</option>
+     <option value="ini">Monograma Personal</option>
+     <option value="heart">Corazón Romántico</option>
+     <option value="ring">Anillos de Boda</option>
+     <option value="crest">Escudo Real</option>
+    </select>
+    <input type="text" id="ini" maxlength="4" placeholder="JM" style="width:65px" title="Iniciales o monograma">
+   </div>
+   <div class="row">
+    <label>Para</label><input type="text" id="covPara" placeholder="El amor de mi vida" style="flex:1">
+   </div>
+   <div class="row">
+    <label>De</label><input type="text" id="covDe" placeholder="Tu persona favorita" style="flex:1">
+   </div>
+  </details>
 
-   <details>
-    <summary>💾 Guardar y Cargar</summary>
-    <div class="row" style="margin-top:8px">
-     <label>Tema</label><select id="thList" style="max-width:140px"></select>
-     <button id="thSave" title="Guardar estilo de tema actual">💾 Guardar</button>
-     <button id="thLoad" title="Cargar tema seleccionado">📂 Cargar</button>
-     <button id="thDel" title="Eliminar tema seleccionado">🗑</button>
-    </div>
-    <div class="row">
-     <label>Carta</label><select id="gList" style="max-width:140px"></select>
-     <button id="gSave" title="Guardar contenido de carta actual">💾 Guardar</button>
-     <button id="gLoad" title="Cargar carta seleccionada">📂 Cargar</button>
-     <button id="gDel" title="Eliminar carta seleccionada">🗑</button>
-    </div>
-   </details>
+  <details>
+   <summary>💾 Guardar & Cargar Cartas</summary>
+   <div class="row" style="margin-top:10px">
+    <label>Tema</label><select id="thList" style="flex:1"></select>
+    <button id="thSave">💾</button>
+    <button id="thLoad">📂</button>
+    <button id="thDel">🗑</button>
+   </div>
+   <div class="row">
+    <label>Carta</label><select id="gList" style="flex:1"></select>
+    <button id="gSave">💾</button>
+    <button id="gLoad">📂</button>
+    <button id="gDel">🗑</button>
+   </div>
+  </details>
 
-   <div class="row" style="margin-top:4px">
-    <button id="b2">⬇ PNG 2x</button>
-    <button id="b3">⬇ PNG 3x</button>
-    <button id="b4">⬇ PNG 4x</button>
+  <div class="panel">
+   <div class="row">
+    <button id="b2" class="act">⬇ PNG 2x</button>
+    <button id="b3">⬇ 3x</button>
+    <button id="b4">⬇ 4x</button>
     <button id="bJPG">⬇ JPG</button>
-    <button id="bPDF">📄 Exportar PDF</button>
+    <button id="bPDF">📄 PDF</button>
     <button id="bPrint">🖨 Imprimir</button>
     <button id="bFecha">📅 Fecha</button>
-    <button id="btnEj">Ejemplo</button>
    </div>
-   <p class="hint">
-    <b># </b>Título · <b>&gt; </b>Dedicatoria · <b>~ </b>Firma · <b>@ </b>Pie · <b>- </b>Lista · <b>---</b> Separador · <b>**negrita**</b> · <b>*cursiva*</b> · <b>==resaltado==</b><br>
-    Línea en blanco = nuevo párrafo. Todo se autoguarda localmente en el navegador.
-   </p>
   </div>
+
  </div>
 
  <div class="preview-col" id="prevCol">
@@ -258,13 +502,14 @@ mark{background-color:rgba(216,201,168,.3);color:inherit;padding:0 3px;border-ra
     <svg class="corner c-br"></svg><svg class="corner c-bl"></svg>
     <svg class="branch bt" id="brT" viewBox="0 0 110 200"></svg>
     <svg class="branch bb" id="brB" viewBox="0 0 110 200"></svg>
-    <svg class="floral-decor" id="decoTopRight" viewBox="0 0 220 160"></svg>
-    <svg class="floral-decor" id="decoBottomLeft" viewBox="0 0 280 320"></svg>
-    <div class="watermark" id="wm">Amor</div>
+    <svg class="floral-decor" id="decoTopRight" viewBox="0 0 220 170"></svg>
+    <svg class="floral-decor" id="decoBottomLeft" viewBox="0 0 290 330"></svg>
+    <div class="watermark" id="wm">Amor Eterno</div>
     <div id="carta"></div>
     <svg id="sprig" viewBox="0 0 160 46"></svg>
     <svg class="seal" id="seal" viewBox="0 0 100 100"></svg>
    </div>
+
    <div id="viewPortada">
     <div class="frame"></div><div class="frame2"></div>
     <svg class="corner c-tl"></svg><svg class="corner c-tr"></svg>
@@ -296,22 +541,43 @@ function setStatus(m,ok){
  status.className=ok?'ok':'err';
 }
 
-var EJ='# A TI, MI AMOR\n\n> para el dueño de mis días\n\nHoy dejo sobre este papel lo que el corazón no sabe callar: te amo con la calma de quien por fin llegó a casa y con el fuego de quien nunca quiere partir.\n\nTu risa es mi lugar favorito en el mundo, y tu abrazo, mi única patria. Contigo aprendí que el amor no se busca: **se reconoce**.\n\nPrometo cuidarte en los días claros y en los oscuros, amarte en lo sencillo y en lo profundo, y elegirte siempre, *en esta y en todas las vidas*.\n\n- Caminar a tu lado en cada amanecer\n- Construir un hogar lleno de paz\n- Celebrar cada uno de tus logros\n\n~ Con todo mi amor,\n~ hoy y siempre.\n\n@ Escrita a mano, con el corazón';
+var TEMPLATES = {
+ aniversario: "# NUESTRO ANIVERSARIO DE AMOR\n\n> Para quien llena cada uno de mis días de luz\n\nHoy celebramos un año más juntos, y al mirar hacia atrás, solo siento gratitud. Cada instante a tu lado ha sido una lección de felicidad y amor verdadero.\n\nGracias por tu sonrisa, por tus abrazos cuando el mundo pesa y por ser mi refugio constante.\n\n- Celebrar nuestros momentos pasados\n- Renovar todas nuestras promesas\n- Seguir construyendo nuestro sueño juntos\n\n~ Con todo mi amor,\n~ hoy, mañana y siempre.\n\n@ Escrita con el corazón en nuestro aniversario",
+ declaracion: "# A TI, EL AMOR DE MI VIDA\n\n> Para el dueño de mis pensamientos\n\nHoy quiero dejar por escrito lo que mis labios no alcanzan a expresar. Te amo con una intensidad tranquila y profunda, con la certeza de que tu destino y el mío se encontraron para siempre.\n\nEres mi luz en la oscuridad y mi alegría más pura.\n\n~ Siempre tuyo,\n~ con todo mi ser.\n\n@ Escrito para ti",
+ distancia: "# A PESAR DE LA DISTANCIA\n\n> Para quien vive en mi mente a cada segundo\n\nAunque los kilómetros nos separen hoy, no hay distancia capaz de enfriar lo que siento por ti. Cada latido de mi corazón pronuncia tu nombre.\n\nCierro los ojos y te siento aquí a mi lado.\n\n- Esperar con ilusión nuestro próximo reencuentro\n- Guardar cada beso para cuando te vuelva a ver\n\n~ Con un amor infinito,\n~ hasta volvernos a abrazar.\n\n@ A través de la distancia, con amor",
+ promesa: "# MI PROMESA DE FUTURO\n\n> Para mi compañero de vida\n\nPrometo estar a tu lado en cada amanecer, cuidar de tu felicidad como cuido de la mía, y apoyarte en cada sueño que decidas emprender.\n\nContigo el futuro no da temor, sino ilusión.\n\n~ Con amor incondicional,\n~ por siempre.\n\n@ Una promesa eterna",
+ reconciliacion: "# CON TODO MI CORAZÓN\n\n> Para ti, lo más valioso de mi vida\n\nLas palabras a veces fallan, pero mi amor por ti jamás lo hace. Quiero pedirte perdón si en algún momento causé distancia. Tu paz y nuestro amor son lo más importante para mí.\n\n~ Siempre a tu lado,\n~ te amo.\n\n@ Con humildad y amor verdadero"
+};
 
 var PRESETS={
- marfil:{paper:'#f6f1e6',ink:'#453a2b',accent:'#a8853f',leaf:'#6b7052',seal:'#8c2f2b',font:'clasico'},
- noche:{paper:'#161d26',ink:'#d7c8a4',accent:'#c8a558',leaf:'#9b8757',seal:'#b08d4f',font:'romantico'},
- rosa:{paper:'#f7edea',ink:'#4b3833',accent:'#b76e5d',leaf:'#8a8064',seal:'#7d2f3a',font:'clasico'},
- salvia:{paper:'#eef0e7',ink:'#3f4a3a',accent:'#7d8a5c',leaf:'#77855d',seal:'#46543a',font:'moderno'},
- lavanda:{paper:'#f2eef7',ink:'#443a4d',accent:'#8a6fa3',leaf:'#8d84a8',seal:'#5d3a75',font:'romantico'},
- tinta:{paper:'#eef1f4',ink:'#2e3a46',accent:'#4a6274',leaf:'#5d7a8a',seal:'#2e4a63',font:'moderno'}
+ marfil:{paper:'#f6f1e6',ink:'#433628',accent:'#c5a059',leaf:'#6b7052',seal:'#8c2f2b',title:'cinzel',body:'garamond',script:'vibes'},
+ noche:{paper:'#141b24',ink:'#e0d5c1',accent:'#d4af37',leaf:'#8a7852',seal:'#b8860b',title:'bodoni',body:'lora',script:'alex'},
+ rosa:{paper:'#f8ecea',ink:'#452d29',accent:'#b86b5c',leaf:'#7d705c',seal:'#80232b',title:'playfair',body:'garamond',script:'dancing'},
+ salvia:{paper:'#edf0e6',ink:'#333d31',accent:'#718355',leaf:'#617047',seal:'#3e4a2d',title:'cormorant',body:'montserrat',script:'satisfy'},
+ lavanda:{paper:'#f3eef7',ink:'#3c3047',accent:'#8e68a8',leaf:'#796d8e',seal:'#5d2e73',title:'cinzel',body:'lora',script:'parisienne'},
+ esmeralda:{paper:'#0e201b',ink:'#e5dfd3',accent:'#d4af37',leaf:'#668574',seal:'#992222',title:'cinzel',body:'garamond',script:'vibes'},
+ sepia:{paper:'#f2e4c9',ink:'#3b2c1a',accent:'#a86d2a',leaf:'#635133',seal:'#7a2618',title:'cormorant',body:'garamond',script:'alex'}
 };
-var FONTS={
- clasico:{t:"'Cormorant Garamond',Georgia,serif",b:"'EB Garamond',Georgia,serif",s:"'Great Vibes',cursive",cap:"'Cormorant Garamond',Georgia,serif",tls:'.35em'},
- romantico:{t:"'Playfair Display',Georgia,serif",b:"'Lora',Georgia,serif",s:"'Parisienne',cursive",cap:"'Playfair Display',Georgia,serif",tls:'.3em'},
- moderno:{t:"'Montserrat',Verdana,sans-serif",b:"'Montserrat',Verdana,sans-serif",s:"'Parisienne',cursive",cap:"'Playfair Display',Georgia,serif",tls:'.32em'},
- imperial:{t:"'Cinzel',Georgia,serif",b:"'EB Garamond',Georgia,serif",s:"'Tangerine',cursive",cap:"'Cinzel',Georgia,serif",tls:'.3em'}
+
+var FONT_MAP_TITLE = {
+ cinzel: "'Cinzel Decorative', Georgia, serif",
+ cormorant: "'Cormorant Garamond', Georgia, serif",
+ playfair: "'Playfair Display', Georgia, serif",
+ bodoni: "'Bodoni Moda', Georgia, serif"
 };
+var FONT_MAP_BODY = {
+ garamond: "'EB Garamond', Georgia, serif",
+ lora: "'Lora', Georgia, serif",
+ montserrat: "'Montserrat', sans-serif"
+};
+var FONT_MAP_SCRIPT = {
+ alex: "'Alex Brush', cursive",
+ vibes: "'Great Vibes', cursive",
+ dancing: "'Dancing Script', cursive",
+ satisfy: "'Satisfy', cursive",
+ parisienne: "'Parisienne', cursive"
+};
+
 var FMTS={r45:[860,1075],a4:[794,1123],sq:[900,900],st:[810,1440]};
 
 function hex2rgb(h){
@@ -335,7 +601,6 @@ function sprigSVG(c,a){
  for(i=0;i<B.length;i++)s+='<g transform="translate('+B[i][0]+' '+B[i][1]+') rotate('+B[i][2]+')"><path d="M0 0 C4 -8 4 -16 0 -24 C-4 -16 -4 -8 0 0 Z" fill="'+c.leaf2+'"/></g>';
  return s+'<path d="M80 6 l7 8 -7 8 -7 -8 z" fill="'+a+'"/><circle cx="10" cy="30" r="2" fill="'+a+'"/><circle cx="150" cy="30" r="2" fill="'+a+'"/>'}
 
-/* FLORES SVG (Acuarela) */
 function flowerPetals(n,rx,ry,off,petal,center){
  var p='';for(var i=0;i<n;i++)p+='<ellipse cx="0" cy="-'+off+'" rx="'+rx+'" ry="'+ry+'" transform="rotate('+((360/n)*i)+')" fill-opacity=".9"/>';
  return '<g fill="'+petal+'">'+p+'</g><circle r="'+Math.max(5,rx)+'" fill="'+center+'"/>';
@@ -367,6 +632,7 @@ function renderFloralDecor(acc, leaf, seal){
 var HEART='M0 12 C-9 2 -16 -2 -16 -10 C-16 -16 -11 -19 -7 -19 C-3 -19 0 -16 0 -12 C0 -16 3 -19 7 -19 C11 -19 16 -16 16 -10 C16 -2 9 2 0 12 Z';
 var ROSE_PATH='M0 -14 C-5 -14 -9 -10 -9 -5 C-9 2 0 10 0 10 C0 10 9 2 9 -5 C9 -10 5 -14 0 -14 Z M-3 -8 C-1 -10 2 -10 4 -8 C5 -6 4 -4 2 -3 C0 -2 -2 -4 -3 -8 Z';
 var RINGS_PATH='M-7 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0 M3 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0';
+var CREST_PATH='M0 -14 L12 -6 L12 6 C12 12 0 16 0 16 C0 16 -12 12 -12 6 L-12 -6 Z';
 
 function monoT(m,dx,dy,c){
  var fs=m.length===1?32:(m.length===2?26:20);
@@ -384,6 +650,8 @@ function sealSVG(c,type,m){
   mid='<path d="'+ROSE_PATH+'" transform="translate(1.2,1.4) scale(1.6)" fill="'+c.dark+'"/><path d="'+ROSE_PATH+'" transform="translate(-0.8,-0.9) scale(1.6)" fill="'+c.light+'"/><path d="'+ROSE_PATH+'" transform="scale(1.6)" fill="'+c.seal+'"/>';
  }else if(type==='ring'){
   mid='<path d="'+RINGS_PATH+'" transform="translate(1.2,1.4)" fill="none" stroke="'+c.dark+'" stroke-width="2.5"/><path d="'+RINGS_PATH+'" transform="translate(-0.8,-0.9)" fill="none" stroke="'+c.light+'" stroke-width="2.5"/><path d="'+RINGS_PATH+'" fill="none" stroke="'+c.seal+'" stroke-width="2.5"/>';
+ }else if(type==='crest'){
+  mid='<path d="'+CREST_PATH+'" transform="translate(1.2,1.4) scale(1.4)" fill="'+c.dark+'"/><path d="'+CREST_PATH+'" transform="translate(-0.8,-0.9) scale(1.4)" fill="'+c.light+'"/><path d="'+CREST_PATH+'" transform="scale(1.4)" fill="'+c.seal+'"/>';
  }else{
   mid='<path d="'+HEART+'" transform="translate(1.2,1.4)" fill="'+c.dark+'"/><path d="'+HEART+'" transform="translate(-0.8,-0.9)" fill="'+c.light+'"/><path d="'+HEART+'" fill="'+c.seal+'"/>';
  }
@@ -408,7 +676,6 @@ function applyTheme(){
  var leafC={leaf:leaf,leaf2:shade(leaf,-25),stem:shade(leaf,-10),olive:shade(leaf,-40)};
  var stype=$('sealSel').value;
  var m=getMono();
- var F=FONTS[$('fSel').value];
 
  escena.style.backgroundColor=paper;
  escena.style.boxShadow='0 20px 70px rgba(0,0,0,.55), inset 0 0 '+(lum(paper)<0.45?'140px rgba(0,0,0,.5)':'90px rgba(0,0,0,.1)');
@@ -444,20 +711,20 @@ function applyTheme(){
  $('stampBox').style.borderColor=acc;$('stampTxt').style.color=acc;
  $('tex').style.display=$('tTex').checked?'':'none';
 
- var wm=$('wm');wm.textContent=$('wmTxt').value||'Amor';wm.style.opacity=$('wmOp').value/100;wm.style.color=ink;wm.style.display=$('tWm').checked?'':'none';wm.style.fontSize='250px';
+ var wm=$('wm');wm.textContent=$('wmTxt').value||'Amor Eterno';wm.style.opacity=$('wmOp').value/100;wm.style.color=ink;wm.style.display=$('tWm').checked?'':'none';wm.style.fontSize='220px';
 
  carta.style.color=ink;
  carta.style.fontSize=$('fs').value+'px';
  carta.style.lineHeight=($('lh').value/10).toString();
  carta.style.letterSpacing=($('ls').value/10)+'px';
  carta.style.textAlign=$('alSel').value;
- carta.style.fontFamily=F.b;
+ carta.style.fontFamily=FONT_MAP_BODY[$('fBody').value] || "Georgia, serif";
 
  var h2s=escena.querySelectorAll('h2'),j;
- for(j=0;j<h2s.length;j++){h2s[j].style.fontFamily=F.t;h2s[j].style.letterSpacing=F.tls}
- var el=escena.querySelectorAll('.foot');for(j=0;j<el.length;j++)el[j].style.fontFamily=F.t;
- var sc=escena.querySelectorAll('.script,.sig');for(j=0;j<sc.length;j++)sc[j].style.fontFamily=F.s;
- var cap=carta.querySelector('.cap');if(cap){cap.style.fontFamily=F.cap;cap.style.color=acc}
+ for(j=0;j<h2s.length;j++){h2s[j].style.fontFamily=FONT_MAP_TITLE[$('fTitle').value]||"Georgia, serif";}
+ var el=escena.querySelectorAll('.foot');for(j=0;j<el.length;j++)el[j].style.fontFamily=FONT_MAP_TITLE[$('fTitle').value]||"Georgia, serif";
+ var sc=escena.querySelectorAll('.script,.sig');for(j=0;j<sc.length;j++)sc[j].style.fontFamily=FONT_MAP_SCRIPT[$('fScript').value]||"cursive";
+ var cap=carta.querySelector('.cap');if(cap){cap.style.fontFamily=FONT_MAP_TITLE[$('fTitle').value]||"Georgia, serif";cap.style.color=acc}
  var dv=escena.querySelectorAll('.divider i');for(j=0;j<dv.length;j++)dv[j].style.background=acc;
  var db=escena.querySelectorAll('.divider b');for(j=0;j<db.length;j++)db[j].style.borderColor=acc;
  var hr=carta.querySelectorAll('hr');for(j=0;j<hr.length;j++)hr[j].style.borderColor=rgba(acc,.5);
@@ -508,7 +775,7 @@ function render(){
 
  var words=ta.value.trim()?ta.value.trim().split(/\s+/).length:0;
  var chars=ta.value.length;
- $('count').textContent=words+' palabras · '+chars+' caracteres';
+ $('count').textContent=words+' pal. · '+chars+' car.';
  applyTheme();
 }
 
@@ -536,7 +803,8 @@ function saveDraft(){
 function state(){
  return{
   x:ta.value,paper:$('cPaper').value,ink:$('cInk').value,acc:$('cAccent').value,leaf:$('cLeaf').value,seal:$('cSeal').value,
-  f:$('fSel').value,fmt:$('fmtSel').value,frm:$('frmSel').value,al:$('alSel').value,
+  ft:$('fTitle').value,fb:$('fBody').value,fs_script:$('fScript').value,
+  fmt:$('fmtSel').value,frm:$('frmSel').value,al:$('alSel').value,
   fs:$('fs').value,lh:$('lh').value,ls:$('ls').value,
   tb:$('tBranch').checked,tf:$('tFloral').checked,tc:$('tCorner').checked,ts:$('tSeal').checked,tw:$('tWm').checked,tt:$('tTex').checked,
   wm:$('wmTxt').value,wo:$('wmOp').value,ss:$('sealSel').value,ini:$('ini').value,
@@ -546,12 +814,13 @@ function state(){
 }
 
 function applyState(d){
- ta.value=d.x!==undefined?d.x:EJ;
- $('cPaper').value=d.paper||'#f6f1e6';$('cInk').value=d.ink||'#453a2b';$('cAccent').value=d.acc||'#a8853f';$('cLeaf').value=d.leaf||'#6b7052';$('cSeal').value=d.seal||'#8c2f2b';
- $('fSel').value=d.f||'clasico';$('fmtSel').value=d.fmt||'r45';$('frmSel').value=d.frm||'doble';$('alSel').value=d.al||'justify';
+ ta.value=d.x!==undefined?d.x:TEMPLATES.declaracion;
+ $('cPaper').value=d.paper||'#f6f1e6';$('cInk').value=d.ink||'#433628';$('cAccent').value=d.acc||'#c5a059';$('cLeaf').value=d.leaf||'#6b7052';$('cSeal').value=d.seal||'#8c2f2b';
+ $('fTitle').value=d.ft||'cinzel';$('fBody').value=d.fb||'garamond';$('fScript').value=d.fs_script||'vibes';
+ $('fmtSel').value=d.fmt||'r45';$('frmSel').value=d.frm||'doble';$('alSel').value=d.al||'justify';
  $('fs').value=d.fs||19;$('lh').value=d.lh||19;$('ls').value=d.ls||2;
  $('tBranch').checked=d.tb!==false;$('tFloral').checked=d.tf!==false;$('tCorner').checked=d.tc!==false;$('tSeal').checked=d.ts!==false;$('tWm').checked=d.tw!==false;$('tTex').checked=d.tt!==false;
- $('wmTxt').value=d.wm||'Amor';$('wmOp').value=d.wo||5;$('sealSel').value=d.ss||'heart';$('ini').value=d.ini||'';
+ $('wmTxt').value=d.wm||'Amor Eterno';$('wmOp').value=d.wo||5;$('sealSel').value=d.ss||'rose';$('ini').value=d.ini||'';
  $('covPara').value=d.cp||'';$('covDe').value=d.cd||'';
  customBgDataUrl=d.bgImg||'';
  $('bgImgOp').value=d.bgOp||100;
@@ -573,10 +842,10 @@ function get(key){try{return JSON.parse(localStorage.getItem(key)||'[]')}catch(e
 
 async function exportar(scale,kind){
  if(typeof html2canvas!=='function'){
-  setStatus('✗ Exportador no cargado: revisa tu conexión.',false);
+  setStatus('✗ Exportador no cargado.',false);
   return;
  }
- setStatus('⏳ Generando imagen en alta resolución…',true);
+ setStatus('⏳ Generando documento de alta definición…',true);
  try{
   if(document.fonts&&document.fonts.ready){
    await document.fonts.ready;
@@ -592,10 +861,10 @@ async function exportar(scale,kind){
   });
   escena.style.zoom=z;
 
-  var n=(mode==='carta'?'carta':'portada')+'-de-amor';
+  var n=(mode==='carta'?'carta':'portada')+'-de-amor-luxury';
   if(kind==='pdf'){
    if(!window.jspdf||!window.jspdf.jsPDF){
-    setStatus('✗ Librería jsPDF no cargada.',false);
+    setStatus('✗ Librería jsPDF no disponible.',false);
     return;
    }
    var w=c.width*25.4/96,h=c.height*25.4/96;
@@ -608,14 +877,14 @@ async function exportar(scale,kind){
    a.href=kind==='jpg'?c.toDataURL('image/jpeg',0.95):c.toDataURL('image/png');
    a.click();
   }
-  setStatus('✓ Archivo guardado correctamente',true);
+  setStatus('✓ Documento guardado con éxito',true);
  }catch(e){
   if(escena)escena.style.zoom=z;
-  setStatus('✗ Error durante la generación: '+e.message,false);
+  setStatus('✗ Error en la exportación: '+e.message,false);
  }
 }
 
-var ctl=['cPaper','cInk','cAccent','cLeaf','cSeal','fSel','fmtSel','frmSel','alSel','fs','lh','ls','tBranch','tFloral','tCorner','tSeal','tWm','tTex','wmTxt','wmOp','sealSel','ini','bgImgOp'];
+var ctl=['cPaper','cInk','cAccent','cLeaf','cSeal','fTitle','fBody','fScript','fmtSel','frmSel','alSel','fs','lh','ls','tBranch','tFloral','tCorner','tSeal','tWm','tTex','wmTxt','wmOp','sealSel','ini','bgImgOp'];
 ctl.forEach(function(id){
  var e=$(id);if(!e)return;
  e.addEventListener('input',applyTheme);
@@ -630,20 +899,29 @@ $('mCarta').addEventListener('click',function(){setMode('carta')});
 $('mPortada').addEventListener('click',function(){setMode('portada')});
 $('zoomSel').addEventListener('change',function(e){escena.style.zoom=e.target.value});
 
+$('tmplSel').addEventListener('change',function(e){
+ var k=e.target.value;
+ if(k&&TEMPLATES[k]){
+  ta.value=TEMPLATES[k];
+  render();
+  setStatus('✓ Plantilla "'+e.target.options[e.target.selectedIndex].text+'" cargada',true);
+ }
+});
+
 var sw=document.querySelectorAll('.swatch');
 for(var s=0;s<sw.length;s++)sw[s].addEventListener('click',function(e){
  var p=PRESETS[e.target.getAttribute('data-p')];
  if(!p)return;
  $('cPaper').value=p.paper;$('cInk').value=p.ink;$('cAccent').value=p.accent;$('cLeaf').value=p.leaf;$('cSeal').value=p.seal;
- $('fSel').value=p.font;
- applyTheme();setStatus('✓ Preset aplicado: '+e.target.getAttribute('title'),true);
+ $('fTitle').value=p.title;$('fBody').value=p.body;$('fScript').value=p.script;
+ applyTheme();setStatus('✓ Colección aplicada: '+e.target.getAttribute('title'),true);
 });
 
 $('bRnd').addEventListener('click',function(){
  var ks=Object.keys(PRESETS),p=PRESETS[ks[Math.floor(Math.random()*ks.length)]];
  $('cPaper').value=p.paper;$('cInk').value=p.ink;$('cAccent').value=p.accent;$('cLeaf').value=p.leaf;$('cSeal').value=p.seal;
- $('fSel').value=p.font;
- applyTheme();setStatus('🎲 Combinación armoniosa generada',true);
+ $('fTitle').value=p.title;$('fBody').value=p.body;$('fScript').value=p.script;
+ applyTheme();setStatus('🎲 Combinación armoniosa aplicada',true);
 });
 
 $('bCopy').addEventListener('click',function(){
@@ -655,7 +933,7 @@ $('bCopy').addEventListener('click',function(){
 });
 
 $('bClear').addEventListener('click',function(){
- if(confirm('¿Deseas borrar el borrador de texto actual?')){
+ if(confirm('¿Deseas limpiar el borrador actual?')){
   ta.value='';render();setStatus('🗑 Borrador limpiado',true);
  }
 });
@@ -668,7 +946,7 @@ $('bgImgFile').addEventListener('change',function(e){
  r.onload=function(ev){
   customBgDataUrl=ev.target.result;
   applyTheme();
-  setStatus('📷 Imagen de fondo personalizada cargada',true);
+  setStatus('📷 Imagen de fondo cargada',true);
  };
  r.readAsDataURL(f);
 });
@@ -685,7 +963,6 @@ $('b4').addEventListener('click',function(){exportar(4,'png')});
 $('bPDF').addEventListener('click',function(){exportar(2,'pdf')});
 $('bJPG').addEventListener('click',function(){exportar(2,'jpg')});
 $('bPrint').addEventListener('click',function(){window.print()});
-$('btnEj').addEventListener('click',function(){ta.value=EJ;render()});
 
 $('bFecha').addEventListener('click',function(){
  var f=new Date(),M=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -696,7 +973,7 @@ $('bFecha').addEventListener('click',function(){
 });
 
 $('thSave').addEventListener('click',function(){
- var g=get('temasV6'),n=prompt('Nombre del tema personal:','Mi Tema '+(g.length+1));if(!n)return;
+ var g=get('temasV6'),n=prompt('Nombre del tema:','Tema '+(g.length+1));if(!n)return;
  g.push({t:n.slice(0,20),d:state()});if(g.length>20)g.shift();store('temasV6',g);list('temasV6',$('thList'));setStatus('✓ Tema guardado con éxito',true);
 });
 $('thLoad').addEventListener('click',function(){
@@ -719,15 +996,12 @@ $('gDel').addEventListener('click',function(){
 
 try{
  var d=null;try{d=JSON.parse(localStorage.getItem('cartaV6'))}catch(e){}
- if(d)applyState(d);else ta.value=EJ;
+ if(d)applyState(d);else ta.value=TEMPLATES.declaracion;
  render();updateCover();list('temasV6',$('thList'));list('cartasV6',$('gList'));setMode('carta');
 }catch(e){setStatus('✗ Error de inicio: '+e.message,false)}
 
 window.addEventListener('load',function(){
- var p=['✓ Aplicación lista'],ok=true;
- if(typeof html2canvas==='function')p.push('✓ Exportador PNG/JPG');else{p.push('✗ PNG');ok=false}
- if(window.jspdf&&window.jspdf.jsPDF)p.push('✓ Exportador PDF');else p.push('⚠ PDF sin conexión');
- p.push('✓ Fuentes cargadas');setStatus(p.join(' · '),ok);
+ setStatus('✓ Estudio de cartas de amor listo',true);
 });
 })();
 </script>

@@ -3,107 +3,310 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Generador de Cartas de Amor — Clásico y Floral</title>
+<title>Generador de Cartas de Amor — Clásico, Floral & Studio</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,400&family=Dancing+Script:wght@600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&family=Lora:ital,wght@0,400;1,400&family=Montserrat:wght@300;400;500;600&family=Parisienne&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Satisfy&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#141110;color:#e9e5dd;font-family:'Montserrat',Verdana,sans-serif;padding:24px}
-.app{display:flex;gap:22px;flex-wrap:wrap;max-width:1500px;margin:0 auto}
-.editor{flex:1 1 360px;min-width:300px}
-.preview-col{flex:2 1 560px;min-width:300px}
-h1{font-size:20px;margin:0 0 14px;color:#f3efe7;display:flex;align-items:center;gap:8px}
-textarea{width:100%;min-height:300px;background:#1d1915;color:#e9e5dd;border:1px solid #3a342c;border-radius:10px;padding:14px;font:14px/1.6 'Montserrat',Verdana,sans-serif;resize:vertical;outline:none}
-textarea:focus{border-color:#a8853f}
-.controls{display:flex;flex-direction:column;gap:10px;margin-top:14px}
-.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-label{font-size:12px;color:#b7afa3;min-width:90px;user-select:none}
-button,select{background:#2e2a24;border:1px solid #4a443a;color:#e9e5dd;border-radius:8px;padding:8px 12px;font:13px Montserrat,sans-serif;cursor:pointer;transition:all .15s ease}
-button:hover,select:hover{background:#3a352c;border-color:#d8c9a8}
-input[type=range]{accent-color:#a8853f}
-.hint{font-size:12px;color:#8f887c;line-height:1.6}
-#status{padding:9px 13px;border-radius:8px;background:#1d1915;border:1px solid #3a342c;font-size:12px;margin-bottom:12px;color:#9fd08f}
-#status.err{color:#e08e8e;border-color:#7a3a3a;background:#251717}
+:root {
+  --bg-dark: #120f0d;
+  --panel-bg: rgba(26, 22, 18, 0.92);
+  --panel-border: #3d3326;
+  --gold-primary: #d4af37;
+  --gold-accent: #c5a059;
+  --text-main: #eae5dc;
+  --text-muted: #a3998b;
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  --shadow-lux: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg-dark);
+  background-image: radial-gradient(circle at 50% 0%, #201811 0%, #120f0d 75%);
+  color: var(--text-main);
+  font-family: 'Montserrat', -apple-system, sans-serif;
+  padding: 24px;
+  min-height: 100vh;
+}
+
+header {
+  max-width: 1500px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--panel-border);
+  padding-bottom: 14px;
+}
+header h1 {
+  font-family: 'Cinzel Decorative', Georgia, serif;
+  font-size: 21px;
+  margin: 0;
+  color: #f3efe7;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+header h1 span {
+  font-size: 12px;
+  font-family: 'Montserrat', sans-serif;
+  color: var(--gold-accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.app {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+.editor { flex: 1 1 380px; min-width: 310px; }
+.preview-col { flex: 2 1 580px; min-width: 310px; overflow: auto; display: flex; justify-content: center; }
+
+#status {
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background: #181410;
+  border: 1px solid var(--panel-border);
+  font-size: 12px;
+  margin-bottom: 14px;
+  color: #9fd08f;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#status.err { color: #f09b9b; border-color: #703333; background: #261212; }
+
+textarea {
+  width: 100%;
+  min-height: 290px;
+  background: #17130f;
+  color: var(--text-main);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  font: 14px/1.65 'Montserrat', sans-serif;
+  resize: vertical;
+  outline: none;
+  transition: border-color .2s;
+}
+textarea:focus { border-color: var(--gold-accent); }
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 500;
+  user-select: none;
+}
+
+button, select, input[type=text] {
+  background: #241d17;
+  border: 1px solid #453a2d;
+  color: var(--text-main);
+  border-radius: 6px;
+  padding: 7px 11px;
+  font: 12px Montserrat, sans-serif;
+  cursor: pointer;
+  outline: none;
+  transition: all .18s ease;
+}
+button:hover, select:hover {
+  background: #2f261f;
+  border-color: var(--gold-accent);
+}
+button.primary {
+  background: linear-gradient(135deg, #433626, #2d2419);
+  border-color: var(--gold-primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+input[type=range] { accent-color: var(--gold-accent); cursor: pointer; }
+
+.hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  background: #17130f;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--panel-border);
+}
+.hint b { color: var(--gold-accent); }
 
 /* ===== ESCENA Y PAPEL ===== */
-#escena{padding:56px 30px;border-radius:14px;background-size:cover;background-position:center;position:relative;transition:all .2s ease}
-.bg-clasico{background-image:
-  radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0,0,0,.5) 100%),
-  radial-gradient(1000px 500px at 82% 12%, rgba(255,196,120,.22), transparent 60%),
-  radial-gradient(800px 600px at 12% 88%, rgba(150,95,45,.25), transparent 60%),
-  linear-gradient(115deg,#43301d 0%,#2c2013 45%,#1a1208 100%);}
-.bg-noche{background-image:
-  radial-gradient(ellipse at 50% 40%, transparent 50%, rgba(0,0,0,.6) 100%),
-  linear-gradient(160deg,#23201b,#151310 70%);}
-.bg-vino{background-image:
-  radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%),
-  linear-gradient(140deg,#4a2420,#2a1512 60%,#180c0a 100%);}
+#escena {
+  padding: 56px 30px;
+  border-radius: var(--radius-lg);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  transition: all .25s ease;
+  box-shadow: var(--shadow-lux);
+}
+
+.bg-clasico {
+  background-image:
+    radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0,0,0,.5) 100%),
+    radial-gradient(1000px 500px at 82% 12%, rgba(255,196,120,.22), transparent 60%),
+    radial-gradient(800px 600px at 12% 88%, rgba(150,95,45,.25), transparent 60%),
+    linear-gradient(115deg,#43301d 0%,#2c2013 45%,#1a1208 100%);
+}
+.bg-noche {
+  background-image:
+    radial-gradient(ellipse at 50% 40%, transparent 50%, rgba(0,0,0,.6) 100%),
+    linear-gradient(160deg,#23201b,#151310 70%);
+}
+.bg-vino {
+  background-image:
+    radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%),
+    linear-gradient(140deg,#4a2420,#2a1512 60%,#180c0a 100%);
+}
 
 /* ===== TEMA AMOR (papel floral) ===== */
-#escena.theme-amor{
-  max-width:700px;margin:0 auto;min-height:980px;padding:70px 60px 140px;border-radius:6px;
-  background-color:#f5f2eb;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23p)' opacity='0.07'/%3E%3C/svg%3E");
+#escena.theme-amor {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  min-height: 980px;
+  padding: 80px 70px 140px;
+  border-radius: 6px;
+  background-color: #f6f2eb;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23p)' opacity='0.07'/%3E%3C/svg%3E");
 }
-.theme-amor #carta{background:transparent;box-shadow:none;max-width:100%;padding:0;
-  color:#8b5f43;font-family:'Montserrat',Verdana,sans-serif;font-weight:400;
-  letter-spacing:.4px;line-height:1.9;text-align:justify}
-.theme-amor #carta h2{font-family:'Playfair Display',Georgia,serif;color:#7b4a2a;
-  font-size:2.4em;letter-spacing:2px;margin:0 0 1em;text-align:left}
-.theme-amor #carta .sig{font-family:'Great Vibes',cursive;color:#7b4a2a;font-size:2.2em;text-align:right;margin-top:1.5em}
-.theme-amor #carta .foot{font-family:'Playfair Display',Georgia,serif;color:#8b5f43;font-size:0.95em;text-align:center;letter-spacing:3px;margin-top:2em;text-transform:uppercase}
-.theme-amor #carta blockquote{border:none;padding:0;margin:2.4em 0 0;text-align:right;
-  font-family:'Playfair Display',Georgia,serif;color:#7b4a2a;font-weight:700;
-  font-size:1.35em;letter-spacing:2px;line-height:1.5}
-.theme-amor #carta hr{border-top:1px solid #d8c9b8}
-.deco{position:absolute;pointer-events:none;display:none}
-.theme-amor .deco{display:block}
-#decoTop{top:26px;right:26px;width:210px;height:160px}
-#decoBottom{bottom:8px;left:20px;width:290px;height:330px}
+
+.theme-amor #carta {
+  background: transparent;
+  box-shadow: none;
+  max-width: 100%;
+  padding: 0;
+  color: #7a5238;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 400;
+  letter-spacing: .4px;
+  line-height: 1.85;
+  text-align: justify;
+}
+.theme-amor #carta h2 {
+  font-family: 'Cinzel Decorative', Georgia, serif;
+  color: #7b4a2a;
+  font-size: 2.2em;
+  letter-spacing: 2px;
+  margin: 0 0 0.8em;
+  text-align: left;
+}
+.theme-amor #carta .sig {
+  font-family: 'Alex Brush', cursive;
+  color: #7b4a2a;
+  font-size: 2.6em;
+  text-align: right;
+  margin-top: 1.5em;
+}
+.theme-amor #carta .foot {
+  font-family: 'Cinzel', Georgia, serif;
+  color: #8b5f43;
+  font-size: 0.9em;
+  text-align: center;
+  letter-spacing: 3px;
+  margin-top: 2em;
+  text-transform: uppercase;
+}
+.theme-amor #carta blockquote {
+  border: none;
+  padding: 0;
+  margin: 2em 0 0;
+  text-align: right;
+  font-family: 'Alex Brush', cursive;
+  color: #7b4a2a;
+  font-size: 1.8em;
+  line-height: 1.4;
+}
+.theme-amor #carta hr { border-top: 1px solid #d8c9b8; }
+
+.deco { position: absolute; pointer-events: none; display: none; }
+.theme-amor .deco { display: block; }
+#decoTop { top: 22px; right: 22px; width: 220px; height: 170px; }
+#decoBottom { bottom: 10px; left: 18px; width: 290px; height: 330px; }
 
 /* ===== CARTA (tema oscuro) ===== */
-#carta{margin:0 auto;background:rgba(43,39,32,.96);color:#f0ece3;border-radius:10px;
-  padding:30px 36px;font-family:'Montserrat',Verdana,sans-serif;
-  font-size:17px;line-height:1.7;box-shadow:0 12px 40px rgba(0,0,0,.45);max-width:860px}
-#carta p{margin:0 0 1.1em}
-#carta h2{font-size:1.4em;margin:1.3em 0 .7em;color:#f6f2ea;font-family:'Playfair Display',Georgia,serif}
-#carta .sig{font-family:'Great Vibes',cursive;color:#f6f2ea;font-size:2.2em;text-align:right;margin-top:1.2em}
-#carta .foot{font-family:'Montserrat',Verdana,sans-serif;font-size:0.85em;text-align:center;letter-spacing:2px;margin-top:2em;color:#b7afa3;text-transform:uppercase}
-#carta hr{border:none;border-top:1px solid #6e675e;margin:28px 0}
-#carta ul{padding-left:24px;margin:0 0 1.1em}
-#carta li{margin:.7em 0}
-#carta strong{color:#ffffff}
-#carta blockquote{margin:1.6em 0 0;padding:0;border:none;text-align:right;font-style:italic;color:#e6e0d4}
+#carta {
+  margin: 0 auto;
+  background: rgba(43,39,32,.96);
+  color: #f0ece3;
+  border-radius: 10px;
+  padding: 36px 42px;
+  font-family: 'Montserrat', Verdana, sans-serif;
+  font-size: 17px;
+  line-height: 1.7;
+  box-shadow: 0 12px 40px rgba(0,0,0,.45);
+  max-width: 860px;
+}
+#carta p { margin: 0 0 1.1em; }
+#carta h2 { font-size: 1.5em; margin: 1.2em 0 .7em; color: #f6f2ea; font-family: 'Playfair Display', Georgia, serif; }
+#carta .sig { font-family: 'Great Vibes', cursive; color: #f6f2ea; font-size: 2.3em; text-align: right; margin-top: 1.2em; }
+#carta .foot { font-family: 'Montserrat', Verdana, sans-serif; font-size: 0.85em; text-align: center; letter-spacing: 2px; margin-top: 2em; color: #b7afa3; text-transform: uppercase; }
+#carta hr { border: none; border-top: 1px solid #6e675e; margin: 28px 0; }
+#carta ul { padding-left: 24px; margin: 0 0 1.1em; }
+#carta li { margin: .6em 0; }
+#carta strong { color: #ffffff; }
+#carta mark { background-color: rgba(212, 175, 55, 0.35); color: inherit; padding: 0 3px; border-radius: 2px; }
+#carta blockquote { margin: 1.6em 0 0; padding: 0; border: none; text-align: right; font-style: italic; color: #e6e0d4; }
 
-@media print{
- body{background:#fff !important;color:#000 !important;padding:0 !important}
- .editor,h1,#status,.hint{display:none !important}
- .app{display:block !important;max-width:none !important}
- .preview-col{overflow:visible !important;width:100% !important}
- #escena{box-shadow:none !important;margin:0 auto !important}
+@media print {
+  body { background: #fff !important; color: #000 !important; padding: 0 !important; }
+  header, .editor, #status, .hint { display: none !important; }
+  .app { display: block !important; max-width: none !important; }
+  .preview-col { overflow: visible !important; width: 100% !important; }
+  #escena { box-shadow: none !important; margin: 0 auto !important; page-break-after: always; }
 }
 </style>
 </head>
 <body>
-<h1>Generador de Cartas de Amor 🌹</h1>
+
+<header>
+  <h1>Generador de Cartas de Amor 🌹 <span>Versión Studio</span></h1>
+</header>
+
 <div class="app">
   <div class="editor">
     <div id="status">✓ Sistema listo</div>
     <textarea id="texto" spellcheck="false"></textarea>
+
     <div class="controls">
       <div class="row">
-        <label>Tema</label>
+        <label>Tema Estilístico</label>
         <select id="tema">
-          <option value="amor">Carta de Amor Floral</option>
-          <option value="oscuro">Clásico Oscuro</option>
+          <option value="amor">Carta de Amor Floral (Papel Marfil)</option>
+          <option value="oscuro">Clásico Oscuro (Estudio Vintage)</option>
         </select>
-        <span id="count" class="hint" style="margin-left:auto"></span>
+        <span id="count" style="margin-left:auto;font-size:11px;color:var(--text-muted)"></span>
       </div>
+
       <div class="row" id="rowFondo">
-        <label>Fondo</label>
+        <label>Fondo Ambiente</label>
         <select id="fondo">
           <option value="bg-clasico">Estudio Clásico (Sepia)</option>
           <option value="bg-noche">Noche Neutra</option>
@@ -112,32 +315,65 @@ input[type=range]{accent-color:#a8853f}
         <button id="btnImg">📷 Imagen fondo</button>
         <input type="file" id="img" accept="image/*" hidden>
       </div>
-      <div class="row"><label>Tamaño Letra</label><input type="range" id="fs" min="14" max="24" value="17"></div>
-      <div class="row" id="rowAw"><label>Ancho Carta</label><input type="range" id="aw" min="620" max="1000" step="20" value="860"></div>
-      <div class="row" id="rowOp"><label>Opacidad</label><input type="range" id="op" min="80" max="100" value="96"></div>
+
       <div class="row">
-        <button id="btnPng">⬇ PNG 2x</button>
+        <label>Fuente Título</label>
+        <select id="fTitle">
+          <option value="cinzel">Cinzel Decorative</option>
+          <option value="playfair">Playfair Display</option>
+          <option value="cormorant">Cormorant Garamond</option>
+        </select>
+        <label>Firma</label>
+        <select id="fScript">
+          <option value="alex">Alex Brush</option>
+          <option value="vibes">Great Vibes</option>
+          <option value="dancing">Dancing Script</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label>Tamaño Letra</label>
+        <input type="range" id="fs" min="14" max="24" value="18">
+      </div>
+
+      <div class="row" id="rowAw">
+        <label>Ancho Carta</label>
+        <input type="range" id="aw" min="620" max="1000" step="20" value="860">
+      </div>
+
+      <div class="row" id="rowOp">
+        <label>Opacidad Fondo</label>
+        <input type="range" id="op" min="80" max="100" value="96">
+      </div>
+
+      <div class="row">
+        <button id="btnPng" class="primary">⬇ PNG 2x</button>
         <button id="btnJpg">⬇ JPG</button>
         <button id="btnPdf">📄 Exportar PDF</button>
         <button id="btnFecha">📅 Fecha</button>
-        <button id="btnEjemplo">Cargar ejemplo</button>
+        <button id="btnEjemplo">Cargar Ejemplo</button>
         <button id="btnPrint">🖨 Imprimir</button>
       </div>
-      <p class="hint">
-        Sintaxis: <b># </b> Título · <b>&gt; </b> Cita/Dedicatoria · <b>~ </b> Firma · <b>@ </b> Pie · <b>- </b> Lista · <b>---</b> Separador · <b>**negrita**</b> · <b>*cursiva*</b>
-      </p>
+
+      <div class="hint">
+        Sintaxis soportada:<br>
+        <b># </b> Título · <b>&gt; </b> Cita/Frase · <b>~ </b> Firma · <b>@ </b> Pie/Fecha · <b>- </b> Lista · <b>---</b> Separador · <b>**negrita**</b> · <b>*cursiva*</b> · <b>==resaltado==</b>
+      </div>
     </div>
   </div>
+
   <div class="preview-col">
     <div id="escena" class="theme-amor">
-      <svg id="decoTop" class="deco" viewBox="0 0 220 160"></svg>
-      <svg id="decoBottom" class="deco" viewBox="0 0 300 340"></svg>
+      <svg id="decoTop" class="deco" viewBox="0 0 220 170"></svg>
+      <svg id="decoBottom" class="deco" viewBox="0 0 290 330"></svg>
       <div id="carta"></div>
     </div>
   </div>
 </div>
 
 <script>
+(function(){
+'use strict';
 const $=id=>document.getElementById(id);
 const ta=$('texto'), carta=$('carta'), escena=$('escena'), status=$('status');
 
@@ -146,24 +382,26 @@ function setStatus(m, ok=true){
   status.className = ok ? '' : 'err';
 }
 
-const EJ_AMOR=`# MI AMOR:
+const EJ_AMOR=`# PARA MI AMOR ETERNO:
 
-Hoy quiero expresarte con todo mi corazón cuánto te amo. Desde el primer momento en que te vi, supe que eras especial. Tu sonrisa ilumina mis días y tu amor me da fuerzas.
+Hoy quiero expresarte con todo mi corazón cuánto te amo. Desde el primer instante en que te vi, supe que tu presencia cambiaría mi vida para siempre. Tu sonrisa es mi refugio y tu amor es el faro que guía mis días.
 
-Cada momento a tu lado es un tesoro que valoro inmensamente. Eres mi confidente, mi compañero y mi gran amor. No hay palabras suficientes para describir la profundidad de mis sentimientos por ti.
+Cada momento a tu lado es un tesoro incalculable que guardo en el alma. Eres mi confidencialidad, mi calma en la tormenta y mi más grande alegría.
 
 - Tu cálida presencia en mis días
-- Nuestras risas compartidas
-- Las promesas de un futuro juntos
+- Nuestras risas compartidas sin prisa
+- Las promesas de un futuro brillante juntos
+
+> "Te amo no solo por lo que eres, sino por lo que soy cuando estoy contigo."
 
 ~ CON TODO MI AMOR,
 ~ SIEMPRE TUYO.
 
-@ Escrito para ti con cariño`;
+@ Escrito para ti con mi amor más puro`;
 
 const EJ_OSCURO=`# PENSAMIENTOS Y REFLEXIONES
 
-Cuando bajamos la pregunta por el sentido al terreno de la **vida cotidiana**, el amor y los afectos cobran un significado trascendental.
+Cuando bajamos la pregunta por el sentido al terreno de los **afectos profundos**, el amor cobra un significado trascendental.
 
 ---
 
@@ -172,8 +410,8 @@ Cuando bajamos la pregunta por el sentido al terreno de la **vida cotidiana**, e
 El amor y el sentido surgen de estar comprometido verdaderamente con personas concretas.
 
 - El respeto mutuo en el día a día
-- Escuchar y cuidar los detalles
-- Elegirnos en todo momento
+- Escuchar y cuidar los detalles invisibles
+- Elegirnos libremente en cada amanecer
 
 > "Amar no es mirarse el uno al otro, sino mirar juntos en la misma dirección."
 
@@ -185,9 +423,11 @@ function flower(n,rx,ry,off,petal,center){
   return `<g fill="${petal}">${p}</g><circle r="${Math.max(5,rx)}" fill="${center}"/>`;
 }
 function leaf(x,y,rot,rx,ry,c){return `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" transform="rotate(${rot} ${x} ${y})" fill="${c}" fill-opacity=".9"/>`}
-function wheat(x,y){let s='';for(let i=0;i<6;i++){const yy=y+i*10;
+function wheat(x,y){
+  let s='';for(let i=0;i<6;i++){const yy=y+i*10;
   s+=`<ellipse cx="${x-6}" cy="${yy}" rx="7" ry="4" transform="rotate(-25 ${x-6} ${yy})"/><ellipse cx="${x+6}" cy="${yy}" rx="7" ry="4" transform="rotate(25 ${x+6} ${yy})"/>`;}
-  return `<g fill="#c9a45f" fill-opacity=".9">${s}</g>`;}
+  return `<g fill="#c9a45f" fill-opacity=".9">${s}</g>`;
+}
 
 $('decoTop').innerHTML=
   `<g transform="translate(140,88)">${flower(12,9,30,34,'#d9b9a3','#8a5a3b')}</g>
@@ -216,7 +456,13 @@ $('decoBottom').innerHTML=
 
 /* ---- parser ---- */
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function inline(s){return s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*]+)\*/g,'<em>$1</em>')}
+function inline(s){
+  return s
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g,'<em>$1</em>')
+    .replace(/==([^=]+)==/g,'<mark>$1</mark>');
+}
+
 function render(){
   const lines=ta.value.split(/\r?\n/);
   let html='',list=false,para=false,quote=false;
@@ -242,8 +488,34 @@ function render(){
 
   const words = ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0;
   $('count').textContent = `${words} palabras · ${ta.value.length} car.`;
+  applyTypography();
 }
+
+function applyTypography(){
+  const titleFont = $('fTitle').value;
+  const scriptFont = $('fScript').value;
+
+  const fontTitleMap = {
+    cinzel: "'Cinzel Decorative', Georgia, serif",
+    playfair: "'Playfair Display', Georgia, serif",
+    cormorant: "'Cormorant Garamond', Georgia, serif"
+  };
+  const fontScriptMap = {
+    alex: "'Alex Brush', cursive",
+    vibes: "'Great Vibes', cursive",
+    dancing: "'Dancing Script', cursive"
+  };
+
+  const h2s = carta.querySelectorAll('h2');
+  h2s.forEach(h => h.style.fontFamily = fontTitleMap[titleFont] || fontTitleMap.cinzel);
+
+  const sigs = carta.querySelectorAll('.sig, blockquote');
+  sigs.forEach(s => s.style.fontFamily = fontScriptMap[scriptFont] || fontScriptMap.alex);
+}
+
 ta.addEventListener('input',render);
+$('fTitle').addEventListener('change',applyTypography);
+$('fScript').addEventListener('change',applyTypography);
 
 /* ---- controles ---- */
 function applyTema(){
@@ -260,7 +532,9 @@ function applyTema(){
   $('rowFondo').style.display=amor?'none':'flex';
   $('rowAw').style.display=amor?'none':'flex';
   $('rowOp').style.display=amor?'none':'flex';
+  applyTypography();
 }
+
 $('tema').onchange=applyTema;
 $('fs').oninput=e=>carta.style.fontSize=e.target.value+'px';
 $('aw').oninput=e=>{if($('tema').value!=='amor')carta.style.maxWidth=e.target.value+'px'};
@@ -273,7 +547,7 @@ $('img').onchange=e=>{
   r.onload=()=>{
     escena.classList.remove('bg-clasico','bg-noche','bg-vino');
     escena.style.backgroundImage=`url(${r.result})`;
-    setStatus('📷 Imagen de fondo cargada');
+    setStatus('📷 Imagen de fondo cargada', true);
   };
   r.readAsDataURL(f);
 };
@@ -281,7 +555,7 @@ $('img').onchange=e=>{
 $('btnEjemplo').onclick=()=>{
   ta.value=$('tema').value==='amor'?EJ_AMOR:EJ_OSCURO;
   render();
-  setStatus('✓ Ejemplo cargado');
+  setStatus('✓ Ejemplo cargado correctamente', true);
 };
 
 $('btnFecha').onclick=()=>{
@@ -294,7 +568,7 @@ $('btnFecha').onclick=()=>{
   if(!found) lines.push('', '@ ' + fechaStr);
   ta.value = lines.join('\n');
   render();
-  setStatus('📅 Fecha insertada');
+  setStatus('📅 Fecha insertada', true);
 };
 
 $('btnPrint').onclick=()=>window.print();
@@ -304,11 +578,11 @@ async function exportar(scale, kind){
     setStatus('✗ html2canvas no está cargado', false);
     return;
   }
-  setStatus('⏳ Generando archivo...', true);
+  setStatus('⏳ Generando archivo en alta calidad...', true);
   try{
     if(document.fonts && document.fonts.ready) await document.fonts.ready;
     const c = await html2canvas(escena, {scale: scale, useCORS: true});
-    const fileName = `carta-de-amor-${Date.now()}`;
+    const fileName = `carta-de-amor-studio-${Date.now()}`;
 
     if(kind === 'pdf'){
       if(!window.jspdf || !window.jspdf.jsPDF){
@@ -325,9 +599,9 @@ async function exportar(scale, kind){
       a.href = kind === 'jpg' ? c.toDataURL('image/jpeg', 0.95) : c.toDataURL('image/png');
       a.click();
     }
-    setStatus('✓ Descarga completada', true);
+    setStatus('✓ Descarga completada con éxito', true);
   } catch(e){
-    setStatus('✗ Error: ' + e.message, false);
+    setStatus('✗ Error en la exportación: ' + e.message, false);
   }
 }
 
@@ -338,6 +612,7 @@ $('btnPdf').onclick=()=>exportar(2, 'pdf');
 ta.value=EJ_AMOR;
 render();
 applyTema();
+})();
 </script>
 </body>
 </html>
