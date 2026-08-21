@@ -3,32 +3,34 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Estudio de Cartas de Amor — Luxury Letter Studio v8</title>
+<title>Estudio de Cartas de Amor — Spectacular Edition</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,400&family=Cinzel+Decorative:wght@600;700&family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Dancing+Script:wght@600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&family=Parisienne&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Satisfy&family=Tangerine:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400&family=Cinzel+Decorative:wght@600;700&family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Dancing+Script:wght@600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600;700&family=Parisienne&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Sacramento&family=Satisfy&family=Tangerine:wght@700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-dark: #0f0d0b;
-  --panel-bg: rgba(26, 22, 18, 0.88);
-  --panel-border: #3d3326;
+  --bg-dark: #0b0908;
+  --panel-bg: rgba(22, 18, 14, 0.92);
+  --panel-border: #3d3122;
   --gold-primary: #d4af37;
   --gold-accent: #c5a059;
-  --gold-hover: #e5c158;
-  --text-main: #eae5dc;
-  --text-muted: #a3998b;
-  --radius-lg: 14px;
-  --radius-md: 9px;
-  --shadow-lux: 0 25px 80px rgba(0, 0, 0, 0.65);
+  --gold-hover: #f0cb69;
+  --text-main: #f0ebe1;
+  --text-muted: #a89c8c;
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --shadow-lux: 0 30px 90px rgba(0, 0, 0, 0.75);
 }
 
 * { box-sizing: border-box; }
 body {
   margin: 0;
   background: var(--bg-dark);
-  background-image: radial-gradient(circle at 50% 0%, #211a14 0%, #0f0d0b 75%);
+  background-image:
+    radial-gradient(circle at 50% 0%, #1e1710 0%, #0b0908 75%),
+    radial-gradient(circle at 10% 90%, rgba(212, 175, 55, 0.05) 0%, transparent 40%);
   color: var(--text-main);
   font-family: 'Montserrat', -apple-system, sans-serif;
   padding: 24px 16px;
@@ -36,7 +38,7 @@ body {
 }
 
 header.app-header {
-  max-width: 1650px;
+  max-width: 1700px;
   margin: 0 auto 20px;
   display: flex;
   align-items: center;
@@ -48,62 +50,78 @@ header h1 {
   margin: 0;
   font-family: 'Cinzel Decorative', Georgia, serif;
   font-size: 22px;
-  color: #f3efe7;
+  color: #f5f0e6;
   letter-spacing: 1.5px;
   display: flex;
   align-items: center;
   gap: 12px;
 }
 header h1 span {
-  font-size: 13px;
+  font-size: 12px;
   font-family: 'Montserrat', sans-serif;
-  background: linear-gradient(135deg, #c5a059, #e5c158);
+  background: linear-gradient(135deg, #c5a059, #f0cb69);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-weight: 600;
-  letter-spacing: 2px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
 }
 
 .app {
   display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-  max-width: 1650px;
+  gap: 20px;
+  max-width: 1700px;
   margin: 0 auto;
+  align-items: flex-start;
 }
 .editor {
-  flex: 1 1 400px;
-  min-width: 330px;
+  flex: 0 0 380px;
+  width: 380px;
+  max-width: 100%;
 }
 .preview-col {
-  flex: 2 1 650px;
-  min-width: 330px;
+  flex: 1;
+  min-width: 0;
   overflow: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 10px;
+}
+
+.preview-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-x: auto;
+  padding-bottom: 20px;
+}
+
+@media (max-width: 900px) {
+  .app { flex-direction: column; }
+  .editor { width: 100%; }
 }
 
 /* PANELS & INPUTS */
 .panel {
   background: var(--panel-bg);
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(16px);
   border: 1px solid var(--panel-border);
   border-radius: var(--radius-lg);
-  padding: 16px;
+  padding: 18px;
   margin-bottom: 16px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
 }
 
 textarea#texto {
   width: 100%;
-  min-height: 280px;
-  background: #15120e;
+  min-height: 290px;
+  background: #14100c;
   color: var(--text-main);
   border: 1px solid var(--panel-border);
   border-radius: var(--radius-md);
-  padding: 14px;
+  padding: 16px;
   font: 14px/1.65 'Montserrat', sans-serif;
   resize: vertical;
   outline: none;
@@ -118,7 +136,7 @@ textarea#texto:focus {
   gap: 8px;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 8px;
+  margin-bottom: 9px;
 }
 .row:last-child { margin-bottom: 0; }
 
@@ -127,39 +145,39 @@ label {
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  font-weight: 500;
+  font-weight: 600;
   user-select: none;
 }
 
 button, select, input[type=text] {
-  background: #231d17;
-  border: 1px solid #453a2d;
+  background: #201a14;
+  border: 1px solid #453828;
   color: var(--text-main);
-  border-radius: 7px;
-  padding: 7px 11px;
+  border-radius: 8px;
+  padding: 8px 12px;
   font: 12px 'Montserrat', sans-serif;
   outline: none;
   cursor: pointer;
   transition: all .18s ease;
 }
 button:hover, select:hover {
-  background: #2e261f;
+  background: #2d241c;
   border-color: var(--gold-accent);
 }
 button.act {
-  background: linear-gradient(135deg, #433626, #2d2419);
+  background: linear-gradient(135deg, #4d3d2a, #33281b);
   border-color: var(--gold-primary);
   color: #fff;
   font-weight: 600;
-  box-shadow: 0 0 12px rgba(197, 160, 89, 0.25);
+  box-shadow: 0 0 12px rgba(197, 160, 89, 0.28);
 }
 
 input[type=color] {
   width: 32px;
   height: 28px;
-  border: 1px solid #453a2d;
+  border: 1px solid #453828;
   border-radius: 6px;
-  background: #15120e;
+  background: #14100c;
   padding: 2px;
   cursor: pointer;
 }
@@ -169,25 +187,25 @@ input[type=range] {
 }
 
 .swatch {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  border: 2px solid #453a2d;
+  border: 2px solid #453828;
   padding: 0;
   cursor: pointer;
   transition: transform .2s ease, border-color .2s ease;
 }
 .swatch:hover {
   border-color: var(--gold-primary);
-  transform: scale(1.15);
+  transform: scale(1.18);
 }
 
 details {
-  background: #17130f;
+  background: #16120e;
   border: 1px solid var(--panel-border);
   border-radius: var(--radius-md);
-  padding: 10px 14px;
-  margin-bottom: 10px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
 }
 summary {
   cursor: pointer;
@@ -200,12 +218,12 @@ summary {
 }
 
 #status {
-  padding: 10px 14px;
+  padding: 11px 16px;
   border-radius: var(--radius-md);
-  background: #17130f;
+  background: #16120e;
   border: 1px solid var(--panel-border);
   font-size: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -213,14 +231,18 @@ summary {
 #status.ok { color: #a3e098; border-color: #3b6631; background: #132110; }
 #status.err { color: #f09b9b; border-color: #703333; background: #261212; }
 
-/* ============ PREVIEW STYLING ============ */
+/* ============ PREVIEW & LETTER STYLING ============ */
 .page {
   position: relative;
+  width: 860px;
+  max-width: 100%;
+  min-height: 1075px;
   margin: 0 auto;
   box-shadow: var(--shadow-lux);
   transition: all .25s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
   background-color: #f6f1e6;
+  transform-origin: top center;
 }
 
 .tex {
@@ -239,21 +261,15 @@ summary {
 }
 
 #viewCarta {
-  position: absolute;
-  inset: 0;
-  padding: 106px 92px 160px;
-}
-#viewPortada {
-  position: absolute;
-  inset: 0;
-  display: none;
+  position: relative;
+  padding: 70px 70px 130px;
 }
 
 .frame, .frame2 { position: absolute; pointer-events: none; }
 .frame { inset: 26px; border: 1.5px solid; }
 .frame2 { inset: 34px; border: 1px solid; }
 
-.corner { position: absolute; width: 84px; height: 84px; pointer-events: none; }
+.corner { position: absolute; width: 88px; height: 88px; pointer-events: none; }
 .c-tl { top: 36px; left: 36px; }
 .c-tr { top: 36px; right: 36px; transform: rotate(90deg); }
 .c-br { bottom: 36px; right: 36px; transform: rotate(180deg); }
@@ -267,14 +283,31 @@ summary {
 #decoTopRight { top: 20px; right: 20px; width: 220px; height: 170px; }
 #decoBottomLeft { bottom: 10px; left: 15px; width: 290px; height: 330px; }
 
-#sprig { position: absolute; bottom: 62px; left: 50%; margin-left: -80px; width: 160px; height: 46px; }
-.seal { position: absolute; right: 88px; bottom: 80px; width: 118px; height: 118px; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3)); }
-.sealCov { right: auto; left: 50%; margin-left: -45px; bottom: 58px; width: 90px; height: 90px; }
+#headerCrest {
+  width: 140px;
+  height: 48px;
+  margin: 0 auto 12px;
+  display: block;
+  pointer-events: none;
+}
+
+#sprig { position: absolute; bottom: 52px; left: 50%; margin-left: -80px; width: 160px; height: 46px; }
+.seal {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.35));
+  transition: all .2s ease;
+}
+.seal.pos-br { right: 80px; bottom: 70px; }
+.seal.pos-bl { left: 80px; bottom: 70px; }
+.seal.pos-bc { left: 50%; bottom: 60px; margin-left: -60px; }
+
 .watermark { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; user-select: none; transform: rotate(-16deg); }
 
-/* CARTA */
+/* CONTENT PARSER STYLES */
 #carta { position: relative; }
-#carta h2 { font-weight: 600; text-transform: uppercase; font-size: 32px; text-align: center; margin: 4px 0 8px; }
+#carta h2 { font-weight: 600; text-transform: uppercase; font-size: 32px; text-align: center; margin: 4px 0 8px; letter-spacing: 2px; }
 .script { font-size: 32px; text-align: center; margin: 0 0 12px; }
 .divider { display: flex; align-items: center; gap: 14px; width: 62%; margin: 18px auto 32px; }
 .divider i { flex: 1; height: 1px; }
@@ -282,22 +315,11 @@ summary {
 #carta p { font-size: 19px; margin: 0 0 1.15em; }
 #carta ul.carta-list { margin: 0 0 1.15em; padding-left: 28px; }
 #carta ul.carta-list li { margin: 0.4em 0; }
-.cap { float: left; font-size: 66px; line-height: .8; margin: 8px 12px 0 0; }
-.sig { font-size: 36px; text-align: right; margin: 20px 70px 2px 0; line-height: 1.45; }
+.cap { float: left; font-size: 68px; line-height: .8; margin: 8px 12px 0 0; }
+.sig { font-size: 38px; text-align: right; margin: 22px 60px 2px 0; line-height: 1.45; }
 .foot { margin-top: 36px; text-align: center; font-weight: 600; font-size: 13px; letter-spacing: .28em; text-transform: uppercase; }
 #carta hr { border: none; border-top: 1px solid; margin: 28px 0; }
 mark { background-color: rgba(212, 175, 55, 0.28); color: inherit; padding: 0 3px; border-radius: 2px; }
-
-/* PORTADA */
-.stampBox { position: absolute; top: 56px; right: 64px; width: 112px; border: 1.5px dashed; padding: 8px 6px 6px; text-align: center; }
-.stampBox svg { width: 86px; height: 82px; display: block; margin: 0 auto; }
-.stampTxt { font: 10px 'Cinzel', Georgia, serif; letter-spacing: 2px; margin-top: 6px; }
-.postmark { position: absolute; top: 86px; right: 150px; width: 150px; height: 112px; opacity: .85; }
-.covCenter { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 90px; text-align: center; }
-.covPara { font-size: 32px; }
-.covName { font-size: 54px; line-height: 1.15; margin: 6px 0 2px; }
-.covCenter .divider { width: 60%; margin: 18px auto 22px; }
-.covDe { margin-top: 0; }
 
 @media print {
   body { background: #fff !important; color: #000 !important; padding: 0 !important; }
@@ -311,7 +333,7 @@ mark { background-color: rgba(212, 175, 55, 0.28); color: inherit; padding: 0 3p
 <body>
 
 <header class="app-header">
-  <h1>Estudio de Cartas de Amor 🖋 <span>Luxury Edition</span></h1>
+  <h1>Estudio de Cartas de Amor 🖋 <span>Spectacular Edition</span></h1>
 </header>
 
 <div class="app">
@@ -320,32 +342,31 @@ mark { background-color: rgba(212, 175, 55, 0.28); color: inherit; padding: 0 3p
 
   <div class="panel">
    <div class="row">
-    <button id="mCarta" class="act">✉ Carta</button>
-    <button id="mPortada">🎁 Portada</button>
-    <label style="margin-left:auto">Plantilla Rápida</label>
-    <select id="tmplSel" style="max-width:140px">
-     <option value="">— Elegir Carta —</option>
-     <option value="aniversario">Aniversario Especial</option>
-     <option value="declaracion">Declaración de Amor</option>
-     <option value="distancia">Carta a Distancia</option>
-     <option value="promesa">Promesa de Futuro</option>
-     <option value="reconciliacion">Reconciliación</option>
+    <label>Plantillas Románticas:</label>
+    <select id="tmplSel" style="flex:1">
+     <option value="">— Seleccionar Carta de Amor —</option>
+     <option value="aniversario">Aniversario de Amor Eterno</option>
+     <option value="declaracion">Declaración de Amor Profundo</option>
+     <option value="distancia">Carta a Distancia / Nostalgia</option>
+     <option value="promesa">Promesa de Futuro Juntos</option>
+     <option value="reconciliacion">Reconciliación y Perdón</option>
+     <option value="poetica">Poema & Versos Románticos</option>
     </select>
    </div>
 
    <textarea id="texto" spellcheck="false"></textarea>
 
    <div class="row" style="margin-top:10px">
-    <label>Vista</label>
+    <label>Zoom Vista</label>
     <select id="zoomSel">
      <option value="1">100%</option>
      <option value="0.85">85%</option>
      <option value="0.7">70%</option>
      <option value="0.5">50%</option>
     </select>
-    <button id="bRnd" title="Generar combinación armoniosa">🎲 Azar</button>
-    <button id="bCopy" title="Copiar texto borrador">📋 Copiar</button>
-    <button id="bClear" title="Limpiar texto">🗑 Limpiar</button>
+    <button id="bRnd" title="Generar combinación estética aleatoria">🎲 Estilo Azar</button>
+    <button id="bCopy" title="Copiar texto">📋 Copiar</button>
+    <button id="bClear" title="Limpiar borrador">🗑 Limpiar</button>
     <span id="count" style="margin-left:auto;font-size:11px;color:var(--text-muted)"></span>
    </div>
   </div>
@@ -354,20 +375,20 @@ mark { background-color: rgba(212, 175, 55, 0.28); color: inherit; padding: 0 3p
    <summary>🎨 Paletas y Papeles de Lujo</summary>
    <div class="row" style="margin-top:10px">
     <label>Colecciones:</label>
-    <button class="swatch" data-p="marfil" style="background:#f6f1e6" title="Marfil & Oro Clásico"></button>
+    <button class="swatch" data-p="marfil" style="background:#f6f1e6" title="Marfil Real & Oro"></button>
     <button class="swatch" data-p="noche" style="background:#141b24" title="Terciopelo Noche & Oro"></button>
     <button class="swatch" data-p="rosa" style="background:#f8ecea" title="Seda Rosa & Granate"></button>
     <button class="swatch" data-p="salvia" style="background:#edf0e6" title="Verde Salvia Botánico"></button>
     <button class="swatch" data-p="lavanda" style="background:#f3eef7" title="Lavanda Imperial"></button>
     <button class="swatch" data-p="esmeralda" style="background:#0e201b" title="Esmeralda & Oro Real"></button>
-    <button class="swatch" data-p="sepia" style="background:#f2e4c9" title="Papiro Antiguo"></button>
+    <button class="swatch" data-p="sepia" style="background:#f2e4c9" title="Papiro Antiguo Vintage"></button>
    </div>
    <div class="row">
     <label>Papel</label><input type="color" id="cPaper" value="#f6f1e6">
     <label>Tinta</label><input type="color" id="cInk" value="#433628">
     <label>Oro/Acento</label><input type="color" id="cAccent" value="#c5a059">
     <label>Hojas</label><input type="color" id="cLeaf" value="#6b7052">
-    <label>Lacre</label><input type="color" id="cSeal" value="#8c2f2b">
+    <label>Sello</label><input type="color" id="cSeal" value="#8c2f2b">
    </div>
    <div class="row">
     <label>Título</label>
@@ -385,13 +406,15 @@ mark { background-color: rgba(212, 175, 55, 0.28); color: inherit; padding: 0 3p
     </select>
    </div>
    <div class="row">
-    <label>Firma</label>
+    <label>Firma / Caligrafía</label>
     <select id="fScript">
      <option value="alex">Alex Brush</option>
      <option value="vibes">Great Vibes</option>
      <option value="dancing">Dancing Script</option>
      <option value="satisfy">Satisfy</option>
      <option value="parisienne">Parisienne</option>
+     <option value="sacramento">Sacramento</option>
+     <option value="tangerine">Tangerine</option>
     </select>
     <label>Marco</label>
     <select id="frmSel">
@@ -401,7 +424,7 @@ mark { background-color: rgba(212, 175, 55, 0.28); color: inherit; padding: 0 3p
     </select>
    </div>
    <div class="row">
-    <label>Formato</label>
+    <label>Formato Papel</label>
     <select id="fmtSel">
      <option value="r45">Retrato 4:5</option>
      <option value="a4">Documento A4</option>
@@ -421,6 +444,7 @@ mark { background-color: rgba(212, 175, 55, 0.28); color: inherit; padding: 0 3p
     <label>Espacio</label><input type="range" id="ls" min="0" max="15" value="2">
    </div>
    <div class="row">
+    <label><input type="checkbox" id="tCrest" checked> Cresta Real</label>
     <label><input type="checkbox" id="tBranch" checked> Ramas</label>
     <label><input type="checkbox" id="tFloral" checked> Flores SVG</label>
     <label><input type="checkbox" id="tCorner" checked> Esquinas</label>
@@ -429,8 +453,8 @@ mark { background-color: rgba(212, 175, 55, 0.28); color: inherit; padding: 0 3p
     <label><input type="checkbox" id="tTex" checked> Textura</label>
    </div>
    <div class="row">
-    <label>Fondo:</label>
-    <button id="btnBgUpload">📷 Subir imagen</button>
+    <label>Fondo Papel:</label>
+    <button id="btnBgUpload">📷 Subir textura/imagen</button>
     <input type="file" id="bgImgFile" accept="image/*" style="display:none">
     <button id="btnBgClear">🗑 Quitar</button>
     <label>Opacidad</label><input type="range" id="bgImgOp" min="10" max="100" value="100">
@@ -441,8 +465,8 @@ mark { background-color: rgba(212, 175, 55, 0.28); color: inherit; padding: 0 3p
    </div>
   </details>
 
-  <details>
-   <summary>💍 Sello de Lacre Real y Portada</summary>
+  <details open>
+   <summary>💍 Sello de Lacre Real Personalizable</summary>
    <div class="row" style="margin-top:10px">
     <label>Diseño Sello</label>
     <select id="sealSel">
@@ -451,19 +475,21 @@ mark { background-color: rgba(212, 175, 55, 0.28); color: inherit; padding: 0 3p
      <option value="heart">Corazón Romántico</option>
      <option value="ring">Anillos de Boda</option>
      <option value="crest">Escudo Real</option>
+     <option value="cupid">Cupido / Flecha</option>
     </select>
+    <label>Monograma</label>
     <input type="text" id="ini" maxlength="4" placeholder="JM" style="width:65px" title="Iniciales o monograma">
-   </div>
-   <div class="row">
-    <label>Para</label><input type="text" id="covPara" placeholder="El amor de mi vida" style="flex:1">
-   </div>
-   <div class="row">
-    <label>De</label><input type="text" id="covDe" placeholder="Tu persona favorita" style="flex:1">
+    <label>Ubicación</label>
+    <select id="sealPos">
+     <option value="pos-br">Derecha Abajo</option>
+     <option value="pos-bl">Izquierda Abajo</option>
+     <option value="pos-bc">Centro Abajo</option>
+    </select>
    </div>
   </details>
 
   <details>
-   <summary>💾 Guardar & Cargar Cartas</summary>
+   <summary>💾 Guardar & Cargar Diseños</summary>
    <div class="row" style="margin-top:10px">
     <label>Tema</label><select id="thList" style="flex:1"></select>
     <button id="thSave">💾</button>
@@ -481,19 +507,20 @@ mark { background-color: rgba(212, 175, 55, 0.28); color: inherit; padding: 0 3p
   <div class="panel">
    <div class="row">
     <button id="b2" class="act">⬇ PNG 2x</button>
-    <button id="b3">⬇ 3x</button>
-    <button id="b4">⬇ 4x</button>
-    <button id="bJPG">⬇ JPG</button>
-    <button id="bPDF">📄 PDF</button>
+    <button id="b3">⬇ 3x Alta Res</button>
+    <button id="b4">⬇ 4x Ultra Res</button>
+    <button id="bJPG">⬇ JPG Studio</button>
+    <button id="bPDF">📄 PDF Vectorial</button>
     <button id="bPrint">🖨 Imprimir</button>
-    <button id="bFecha">📅 Fecha</button>
+    <button id="bFecha">📅 Insertar Fecha</button>
    </div>
   </div>
 
  </div>
 
  <div class="preview-col" id="prevCol">
-  <div id="escena" class="page">
+  <div class="preview-wrapper">
+   <div id="escena" class="page">
    <div id="bgCustomLayer"></div>
    <div class="tex" id="tex"></div>
    <div id="viewCarta">
@@ -505,24 +532,10 @@ mark { background-color: rgba(212, 175, 55, 0.28); color: inherit; padding: 0 3p
     <svg class="floral-decor" id="decoTopRight" viewBox="0 0 220 170"></svg>
     <svg class="floral-decor" id="decoBottomLeft" viewBox="0 0 290 330"></svg>
     <div class="watermark" id="wm">Amor Eterno</div>
+    <svg id="headerCrest" viewBox="0 0 140 48"></svg>
     <div id="carta"></div>
     <svg id="sprig" viewBox="0 0 160 46"></svg>
-    <svg class="seal" id="seal" viewBox="0 0 100 100"></svg>
-   </div>
-
-   <div id="viewPortada">
-    <div class="frame"></div><div class="frame2"></div>
-    <svg class="corner c-tl"></svg><svg class="corner c-tr"></svg>
-    <svg class="corner c-br"></svg><svg class="corner c-bl"></svg>
-    <div class="stampBox" id="stampBox"><svg id="stampArt" viewBox="0 0 100 96"></svg><div class="stampTxt" id="stampTxt">CORREO<br>DEL AMOR</div></div>
-    <svg class="postmark" id="pm" viewBox="0 0 160 120"></svg>
-    <div class="covCenter">
-     <div class="script covPara">Para:</div>
-     <div class="script covName" id="covNameView">El amor de mi vida</div>
-     <div class="divider"><i></i><b></b><i></i></div>
-     <div class="foot covDe" id="covDeView">De parte de tu persona favorita</div>
-    </div>
-    <svg class="seal sealCov" id="sealCov" viewBox="0 0 100 100"></svg>
+    <svg class="seal pos-br" id="seal" viewBox="0 0 100 100"></svg>
    </div>
   </div>
  </div>
@@ -533,7 +546,6 @@ mark { background-color: rgba(212, 175, 55, 0.28); color: inherit; padding: 0 3p
 'use strict';
 var $=function(id){return document.getElementById(id)};
 var status=$('status'),ta=$('texto'),carta=$('carta'),escena=$('escena');
-var mode='carta';
 var customBgDataUrl = '';
 
 function setStatus(m,ok){
@@ -542,11 +554,12 @@ function setStatus(m,ok){
 }
 
 var TEMPLATES = {
- aniversario: "# NUESTRO ANIVERSARIO DE AMOR\n\n> Para quien llena cada uno de mis días de luz\n\nHoy celebramos un año más juntos, y al mirar hacia atrás, solo siento gratitud. Cada instante a tu lado ha sido una lección de felicidad y amor verdadero.\n\nGracias por tu sonrisa, por tus abrazos cuando el mundo pesa y por ser mi refugio constante.\n\n- Celebrar nuestros momentos pasados\n- Renovar todas nuestras promesas\n- Seguir construyendo nuestro sueño juntos\n\n~ Con todo mi amor,\n~ hoy, mañana y siempre.\n\n@ Escrita con el corazón en nuestro aniversario",
- declaracion: "# A TI, EL AMOR DE MI VIDA\n\n> Para el dueño de mis pensamientos\n\nHoy quiero dejar por escrito lo que mis labios no alcanzan a expresar. Te amo con una intensidad tranquila y profunda, con la certeza de que tu destino y el mío se encontraron para siempre.\n\nEres mi luz en la oscuridad y mi alegría más pura.\n\n~ Siempre tuyo,\n~ con todo mi ser.\n\n@ Escrito para ti",
- distancia: "# A PESAR DE LA DISTANCIA\n\n> Para quien vive en mi mente a cada segundo\n\nAunque los kilómetros nos separen hoy, no hay distancia capaz de enfriar lo que siento por ti. Cada latido de mi corazón pronuncia tu nombre.\n\nCierro los ojos y te siento aquí a mi lado.\n\n- Esperar con ilusión nuestro próximo reencuentro\n- Guardar cada beso para cuando te vuelva a ver\n\n~ Con un amor infinito,\n~ hasta volvernos a abrazar.\n\n@ A través de la distancia, con amor",
- promesa: "# MI PROMESA DE FUTURO\n\n> Para mi compañero de vida\n\nPrometo estar a tu lado en cada amanecer, cuidar de tu felicidad como cuido de la mía, y apoyarte en cada sueño que decidas emprender.\n\nContigo el futuro no da temor, sino ilusión.\n\n~ Con amor incondicional,\n~ por siempre.\n\n@ Una promesa eterna",
- reconciliacion: "# CON TODO MI CORAZÓN\n\n> Para ti, lo más valioso de mi vida\n\nLas palabras a veces fallan, pero mi amor por ti jamás lo hace. Quiero pedirte perdón si en algún momento causé distancia. Tu paz y nuestro amor son lo más importante para mí.\n\n~ Siempre a tu lado,\n~ te amo.\n\n@ Con humildad y amor verdadero"
+ aniversario: "# NUESTRO ANIVERSARIO DE AMOR\n\n> Para quien llena cada uno de mis días de luz\n\nHoy celebramos un año más juntos, y al mirar hacia atrás, solo siento gratitud en mi alma. Cada instante a tu lado ha sido una lección de felicidad y amor verdadero.\n\nGracias por tu cálida sonrisa, por tus abrazos sinceros cuando el mundo pesa y por ser mi refugio incondicional.\n\n- Celebrar cada uno de nuestros recuerdos\n- Renovar con el alma todas nuestras promesas\n- Seguir construyendo nuestro hermoso sueño juntos\n\n~ Con todo mi amor,\n~ hoy, mañana y siempre.\n\n@ Escrita con el corazón en nuestro aniversario",
+ declaracion: "# A TI, EL AMOR DE MI VIDA\n\n> Para el dueño de todos mis pensamientos\n\nHoy quiero dejar por escrito lo que mis labios a veces no alcanzan a expresar. Te amo con una intensidad tranquila y profunda, con la certeza de que tu destino y el mío se encontraron para nunca separarse.\n\nEres mi luz en la oscuridad y mi alegría más pura.\n\n~ Siempre tuyo,\n~ con todo mi ser.\n\n@ Escrito para ti con mi amor verdadero",
+ distancia: "# A PESAR DE LA DISTANCIA\n\n> Para quien vive en mi mente a cada segundo\n\nAunque los kilómetros nos separen hoy, no hay distancia capaz de enfriar lo que siento por ti. Cada latido de mi corazón pronuncia tu nombre.\n\nCierro los ojos y te siento aquí muy cerca.\n\n- Esperar con ilusión nuestro próximo reencuentro\n- Guardar cada beso para cuando te vuelva a ver\n\n~ Con un amor infinito,\n~ hasta volvernos a abrazar.\n\n@ A través de la distancia, con amor eterno",
+ promesa: "# MI PROMESA DE FUTURO\n\n> Para mi compañero y refugio de vida\n\nPrometo estar a tu lado en cada amanecer, cuidar de tu felicidad como cuido de la mía, y apoyarte en cada sueño que decidas emprender.\n\nContigo el futuro no da temor, sino una inmensa ilusión.\n\n~ Con amor incondicional,\n~ por siempre.\n\n@ Una promesa eterna escrita en el corazón",
+ reconciliacion: "# CON TODO MI CORAZÓN\n\n> Para ti, lo más valioso de mi existencia\n\nLas palabras a veces fallan, pero mi amor por ti jamás lo hace. Quiero pedirte perdón si en algún momento causé distancia. Tu paz y nuestro amor son lo más importante para mí.\n\n~ Siempre a tu lado,\n~ te amo.\n\n@ Con humildad y amor puro",
+ poetica: "# RIMA DE AMOR Y LUZ\n\n> \"Podrá nublarse el sol eternamente... pero jamás en mí podrá apagarse la llama de tu amor.\"\n\nEn la penumbra de las horas lentas, tu recuerdo es la luz que me ilumina. No existe poema ni verso capaz de contener todo lo que significas en mi vida.\n\n- La calma de tu voz en mi silencio\n- El calor de tus manos junto a las mías\n\n~ Por siempre en mi pensamiento,\n~ mi amor sublime.\n\n@ Escrito bajo la luna"
 };
 
 var PRESETS={
@@ -575,7 +588,9 @@ var FONT_MAP_SCRIPT = {
  vibes: "'Great Vibes', cursive",
  dancing: "'Dancing Script', cursive",
  satisfy: "'Satisfy', cursive",
- parisienne: "'Parisienne', cursive"
+ parisienne: "'Parisienne', cursive",
+ sacramento: "'Sacramento', cursive",
+ tangerine: "'Tangerine', cursive"
 };
 
 var FMTS={r45:[860,1075],a4:[794,1123],sq:[900,900],st:[810,1440]};
@@ -600,6 +615,10 @@ function sprigSVG(c,a){
  for(i=0;i<T.length;i++)s+='<g transform="translate('+T[i][0]+' '+T[i][1]+') rotate('+T[i][2]+')"><path d="M0 0 C4 -8 4 -16 0 -24 C-4 -16 -4 -8 0 0 Z" fill="'+c.leaf+'"/></g>';
  for(i=0;i<B.length;i++)s+='<g transform="translate('+B[i][0]+' '+B[i][1]+') rotate('+B[i][2]+')"><path d="M0 0 C4 -8 4 -16 0 -24 C-4 -16 -4 -8 0 0 Z" fill="'+c.leaf2+'"/></g>';
  return s+'<path d="M80 6 l7 8 -7 8 -7 -8 z" fill="'+a+'"/><circle cx="10" cy="30" r="2" fill="'+a+'"/><circle cx="150" cy="30" r="2" fill="'+a+'"/>'}
+
+function headerCrestSVG(a){
+ return '<path d="M10 24 C40 10 100 10 130 24" fill="none" stroke="'+a+'" stroke-width="1.5"/><circle cx="70" cy="18" r="4" fill="'+a+'"/><path d="M60 18 C65 8 75 8 80 18" fill="none" stroke="'+a+'" stroke-width="1.2"/><path d="M40 24 l6 -6 l6 6" fill="none" stroke="'+a+'" stroke-width="1.2"/><path d="M100 24 l6 -6 l6 6" fill="none" stroke="'+a+'" stroke-width="1.2"/>';
+}
 
 function flowerPetals(n,rx,ry,off,petal,center){
  var p='';for(var i=0;i<n;i++)p+='<ellipse cx="0" cy="-'+off+'" rx="'+rx+'" ry="'+ry+'" transform="rotate('+((360/n)*i)+')" fill-opacity=".9"/>';
@@ -628,11 +647,12 @@ function renderFloralDecor(acc, leaf, seal){
  return {top:top,bot:bot};
 }
 
-/* SELLOS */
+/* SELLOS DE LACRE */
 var HEART='M0 12 C-9 2 -16 -2 -16 -10 C-16 -16 -11 -19 -7 -19 C-3 -19 0 -16 0 -12 C0 -16 3 -19 7 -19 C11 -19 16 -16 16 -10 C16 -2 9 2 0 12 Z';
 var ROSE_PATH='M0 -14 C-5 -14 -9 -10 -9 -5 C-9 2 0 10 0 10 C0 10 9 2 9 -5 C9 -10 5 -14 0 -14 Z M-3 -8 C-1 -10 2 -10 4 -8 C5 -6 4 -4 2 -3 C0 -2 -2 -4 -3 -8 Z';
 var RINGS_PATH='M-7 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0 M3 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0';
 var CREST_PATH='M0 -14 L12 -6 L12 6 C12 12 0 16 0 16 C0 16 -12 12 -12 6 L-12 -6 Z';
+var CUPID_PATH='M-14 10 L14 -10 M8 -10 L14 -10 L14 -4 M-14 10 L-8 6 M-14 10 L-10 14';
 
 function monoT(m,dx,dy,c){
  var fs=m.length===1?32:(m.length===2?26:20);
@@ -652,20 +672,12 @@ function sealSVG(c,type,m){
   mid='<path d="'+RINGS_PATH+'" transform="translate(1.2,1.4)" fill="none" stroke="'+c.dark+'" stroke-width="2.5"/><path d="'+RINGS_PATH+'" transform="translate(-0.8,-0.9)" fill="none" stroke="'+c.light+'" stroke-width="2.5"/><path d="'+RINGS_PATH+'" fill="none" stroke="'+c.seal+'" stroke-width="2.5"/>';
  }else if(type==='crest'){
   mid='<path d="'+CREST_PATH+'" transform="translate(1.2,1.4) scale(1.4)" fill="'+c.dark+'"/><path d="'+CREST_PATH+'" transform="translate(-0.8,-0.9) scale(1.4)" fill="'+c.light+'"/><path d="'+CREST_PATH+'" transform="scale(1.4)" fill="'+c.seal+'"/>';
+ }else if(type==='cupid'){
+  mid='<path d="'+CUPID_PATH+'" transform="translate(1.2,1.4)" fill="none" stroke="'+c.dark+'" stroke-width="2.5"/><path d="'+CUPID_PATH+'" fill="none" stroke="'+c.light+'" stroke-width="2.5"/>';
  }else{
   mid='<path d="'+HEART+'" transform="translate(1.2,1.4)" fill="'+c.dark+'"/><path d="'+HEART+'" transform="translate(-0.8,-0.9)" fill="'+c.light+'"/><path d="'+HEART+'" fill="'+c.seal+'"/>';
  }
  return b+mid+'</g><ellipse cx="36" cy="26" rx="14" ry="8" fill="#fff" opacity=".14" transform="rotate(-25 36 26)"/><circle cx="88" cy="76" r="4" fill="'+c.seal+'"/><circle cx="14" cy="70" r="3" fill="'+c.seal+'"/>';
-}
-
-function florSVG(a,s){
- var r='<g fill="'+a+'" fill-opacity=".9">';
- for(var i=0;i<8;i++)r+='<ellipse cx="50" cy="30" rx="8" ry="18" transform="rotate('+(i*45)+' 50 48)"/>';
- return r+'</g><circle cx="50" cy="48" r="8" fill="'+s+'"/>';
-}
-function pmSVG(g){
- var y=new Date().getFullYear();
- return '<circle cx="100" cy="60" r="46" fill="none" stroke="'+g+'" stroke-width="2" opacity=".8"/><circle cx="100" cy="60" r="37" fill="none" stroke="'+g+'" stroke-width="1" opacity=".7"/><text x="100" y="56" text-anchor="middle" font-family="Georgia,serif" font-size="10" letter-spacing="3" fill="'+g+'">CON AMOR</text><text x="100" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="10" letter-spacing="3" fill="'+g+'">'+y+'</text><path d="M6 48 q8 -6 16 0 t16 0 t16 0" fill="none" stroke="'+g+'" stroke-width="1.5" opacity=".7"/><path d="M6 62 q8 -6 16 0 t16 0 t16 0" fill="none" stroke="'+g+'" stroke-width="1.5" opacity=".7"/><path d="M6 76 q8 -6 16 0 t16 0 t16 0" fill="none" stroke="'+g+'" stroke-width="1.5" opacity=".7"/>';
 }
 
 function getMono(){return $('ini').value.replace(/[^a-záéíóúüñ]/gi,'').slice(0,4).toUpperCase()}
@@ -703,12 +715,14 @@ function applyTheme(){
  $('decoTopRight').style.display=fd;
  $('decoBottomLeft').style.display=fd;
 
- $('seal').innerHTML=sealSVG(sealC,stype,m);
- $('sealCov').innerHTML=sealSVG(sealC,stype,m);
- var sd=$('tSeal').checked?'':'none';$('seal').style.display=sd;$('sealCov').style.display=sd;
+ $('headerCrest').innerHTML=headerCrestSVG(acc);
+ $('headerCrest').style.display=$('tCrest').checked?'block':'none';
 
- $('stampArt').innerHTML=florSVG(acc,seal);$('pm').innerHTML=pmSVG(acc);
- $('stampBox').style.borderColor=acc;$('stampTxt').style.color=acc;
+ var sealElem=$('seal');
+ sealElem.innerHTML=sealSVG(sealC,stype,m);
+ sealElem.className='seal '+$('sealPos').value;
+ sealElem.style.display=$('tSeal').checked?'':'none';
+
  $('tex').style.display=$('tTex').checked?'':'none';
 
  var wm=$('wm');wm.textContent=$('wmTxt').value||'Amor Eterno';wm.style.opacity=$('wmOp').value/100;wm.style.color=ink;wm.style.display=$('tWm').checked?'':'none';wm.style.fontSize='220px';
@@ -779,24 +793,11 @@ function render(){
  applyTheme();
 }
 
-function updateCover(){
- $('covNameView').textContent=$('covPara').value||'El amor de mi vida';
- $('covDeView').textContent=$('covDe').value||'De parte de tu persona favorita';
- saveDraft();
-}
-function setMode(m){
- mode=m;
- $('viewCarta').style.display=m==='carta'?'block':'none';
- $('viewPortada').style.display=m==='portada'?'block':'none';
- $('mCarta').className=m==='carta'?'act':'';
- $('mPortada').className=m==='portada'?'act':'';
-}
-
 var dT=null;
 function saveDraft(){
  clearTimeout(dT);
  dT=setTimeout(function(){
-  try{localStorage.setItem('cartaV6',JSON.stringify(state()))}catch(e){}
+  try{localStorage.setItem('cartaV7_letterOnly',JSON.stringify(state()))}catch(e){}
  },400);
 }
 
@@ -806,9 +807,8 @@ function state(){
   ft:$('fTitle').value,fb:$('fBody').value,fs_script:$('fScript').value,
   fmt:$('fmtSel').value,frm:$('frmSel').value,al:$('alSel').value,
   fs:$('fs').value,lh:$('lh').value,ls:$('ls').value,
-  tb:$('tBranch').checked,tf:$('tFloral').checked,tc:$('tCorner').checked,ts:$('tSeal').checked,tw:$('tWm').checked,tt:$('tTex').checked,
-  wm:$('wmTxt').value,wo:$('wmOp').value,ss:$('sealSel').value,ini:$('ini').value,
-  cp:$('covPara').value,cd:$('covDe').value,
+  tcR:$('tCrest').checked,tb:$('tBranch').checked,tf:$('tFloral').checked,tc:$('tCorner').checked,ts:$('tSeal').checked,tw:$('tWm').checked,tt:$('tTex').checked,
+  wm:$('wmTxt').value,wo:$('wmOp').value,ss:$('sealSel').value,sp:$('sealPos').value,ini:$('ini').value,
   bgImg:customBgDataUrl,bgOp:$('bgImgOp').value
  };
 }
@@ -819,9 +819,8 @@ function applyState(d){
  $('fTitle').value=d.ft||'cinzel';$('fBody').value=d.fb||'garamond';$('fScript').value=d.fs_script||'vibes';
  $('fmtSel').value=d.fmt||'r45';$('frmSel').value=d.frm||'doble';$('alSel').value=d.al||'justify';
  $('fs').value=d.fs||19;$('lh').value=d.lh||19;$('ls').value=d.ls||2;
- $('tBranch').checked=d.tb!==false;$('tFloral').checked=d.tf!==false;$('tCorner').checked=d.tc!==false;$('tSeal').checked=d.ts!==false;$('tWm').checked=d.tw!==false;$('tTex').checked=d.tt!==false;
- $('wmTxt').value=d.wm||'Amor Eterno';$('wmOp').value=d.wo||5;$('sealSel').value=d.ss||'rose';$('ini').value=d.ini||'';
- $('covPara').value=d.cp||'';$('covDe').value=d.cd||'';
+ $('tCrest').checked=d.tcR!==false;$('tBranch').checked=d.tb!==false;$('tFloral').checked=d.tf!==false;$('tCorner').checked=d.tc!==false;$('tSeal').checked=d.ts!==false;$('tWm').checked=d.tw!==false;$('tTex').checked=d.tt!==false;
+ $('wmTxt').value=d.wm||'Amor Eterno';$('wmOp').value=d.wo||5;$('sealSel').value=d.ss||'rose';$('sealPos').value=d.sp||'pos-br';$('ini').value=d.ini||'';
  customBgDataUrl=d.bgImg||'';
  $('bgImgOp').value=d.bgOp||100;
 }
@@ -861,7 +860,7 @@ async function exportar(scale,kind){
   });
   escena.style.zoom=z;
 
-  var n=(mode==='carta'?'carta':'portada')+'-de-amor-luxury';
+  var n='carta-de-amor-spectacular';
   if(kind==='pdf'){
    if(!window.jspdf||!window.jspdf.jsPDF){
     setStatus('✗ Librería jsPDF no disponible.',false);
@@ -877,14 +876,14 @@ async function exportar(scale,kind){
    a.href=kind==='jpg'?c.toDataURL('image/jpeg',0.95):c.toDataURL('image/png');
    a.click();
   }
-  setStatus('✓ Documento guardado con éxito',true);
+  setStatus('✓ Carta guardada con éxito',true);
  }catch(e){
   if(escena)escena.style.zoom=z;
   setStatus('✗ Error en la exportación: '+e.message,false);
  }
 }
 
-var ctl=['cPaper','cInk','cAccent','cLeaf','cSeal','fTitle','fBody','fScript','fmtSel','frmSel','alSel','fs','lh','ls','tBranch','tFloral','tCorner','tSeal','tWm','tTex','wmTxt','wmOp','sealSel','ini','bgImgOp'];
+var ctl=['cPaper','cInk','cAccent','cLeaf','cSeal','fTitle','fBody','fScript','fmtSel','frmSel','alSel','fs','lh','ls','tCrest','tBranch','tFloral','tCorner','tSeal','tWm','tTex','wmTxt','wmOp','sealSel','sealPos','ini','bgImgOp'];
 ctl.forEach(function(id){
  var e=$(id);if(!e)return;
  e.addEventListener('input',applyTheme);
@@ -892,11 +891,7 @@ ctl.forEach(function(id){
 });
 
 ta.addEventListener('input',render);
-$('covPara').addEventListener('input',updateCover);
-$('covDe').addEventListener('input',updateCover);
 
-$('mCarta').addEventListener('click',function(){setMode('carta')});
-$('mPortada').addEventListener('click',function(){setMode('portada')});
 $('zoomSel').addEventListener('change',function(e){escena.style.zoom=e.target.value});
 
 $('tmplSel').addEventListener('change',function(e){
@@ -921,7 +916,7 @@ $('bRnd').addEventListener('click',function(){
  var ks=Object.keys(PRESETS),p=PRESETS[ks[Math.floor(Math.random()*ks.length)]];
  $('cPaper').value=p.paper;$('cInk').value=p.ink;$('cAccent').value=p.accent;$('cLeaf').value=p.leaf;$('cSeal').value=p.seal;
  $('fTitle').value=p.title;$('fBody').value=p.body;$('fScript').value=p.script;
- applyTheme();setStatus('🎲 Combinación armoniosa aplicada',true);
+ applyTheme();setStatus('🎲 Combinación estética aplicada',true);
 });
 
 $('bCopy').addEventListener('click',function(){
@@ -973,31 +968,31 @@ $('bFecha').addEventListener('click',function(){
 });
 
 $('thSave').addEventListener('click',function(){
- var g=get('temasV6'),n=prompt('Nombre del tema:','Tema '+(g.length+1));if(!n)return;
- g.push({t:n.slice(0,20),d:state()});if(g.length>20)g.shift();store('temasV6',g);list('temasV6',$('thList'));setStatus('✓ Tema guardado con éxito',true);
+ var g=get('temasV7'),n=prompt('Nombre del tema:','Tema '+(g.length+1));if(!n)return;
+ g.push({t:n.slice(0,20),d:state()});if(g.length>20)g.shift();store('temasV7',g);list('temasV7',$('thList'));setStatus('✓ Tema guardado con éxito',true);
 });
 $('thLoad').addEventListener('click',function(){
- var g=get('temasV6'),i=+$('thList').value;if(!g[i])return;applyState(g[i].d);render();updateCover();setStatus('✓ Tema cargado correctamente',true);
+ var g=get('temasV7'),i=+$('thList').value;if(!g[i])return;applyState(g[i].d);render();setStatus('✓ Tema cargado correctamente',true);
 });
 $('thDel').addEventListener('click',function(){
- var g=get('temasV6'),i=+$('thList').value;if(g[i]===undefined)return;g.splice(i,1);store('temasV6',g);list('temasV6',$('thList'));setStatus('🗑 Tema eliminado',true);
+ var g=get('temasV7'),i=+$('thList').value;if(g[i]===undefined)return;g.splice(i,1);store('temasV7',g);list('temasV7',$('thList'));setStatus('🗑 Tema eliminado',true);
 });
 
 $('gSave').addEventListener('click',function(){
- var g=get('cartasV6'),m=ta.value.match(/^#\s*(.+)/m);
- g.push({t:(m?m[1]:'Carta '+(g.length+1)).slice(0,22),d:state()});if(g.length>25)g.shift();store('cartasV6',g);list('cartasV6',$('gList'));setStatus('✓ Carta guardada con éxito',true);
+ var g=get('cartasV7'),m=ta.value.match(/^#\s*(.+)/m);
+ g.push({t:(m?m[1]:'Carta '+(g.length+1)).slice(0,22),d:state()});if(g.length>25)g.shift();store('cartasV7',g);list('cartasV7',$('gList'));setStatus('✓ Carta guardada con éxito',true);
 });
 $('gLoad').addEventListener('click',function(){
- var g=get('cartasV6'),i=+$('gList').value;if(!g[i])return;applyState(g[i].d);render();updateCover();setStatus('✓ Carta cargada correctamente',true);
+ var g=get('cartasV7'),i=+$('gList').value;if(!g[i])return;applyState(g[i].d);render();setStatus('✓ Carta cargada correctamente',true);
 });
 $('gDel').addEventListener('click',function(){
- var g=get('cartasV6'),i=+$('gList').value;if(g[i]===undefined)return;g.splice(i,1);store('cartasV6',g);list('cartasV6',$('gList'));setStatus('🗑 Carta eliminada',true);
+ var g=get('cartasV7'),i=+$('gList').value;if(g[i]===undefined)return;g.splice(i,1);store('cartasV7',g);list('cartasV7',$('gList'));setStatus('🗑 Carta eliminada',true);
 });
 
 try{
- var d=null;try{d=JSON.parse(localStorage.getItem('cartaV6'))}catch(e){}
+ var d=null;try{d=JSON.parse(localStorage.getItem('cartaV7_letterOnly'))}catch(e){}
  if(d)applyState(d);else ta.value=TEMPLATES.declaracion;
- render();updateCover();list('temasV6',$('thList'));list('cartasV6',$('gList'));setMode('carta');
+ render();list('temasV7',$('thList'));list('cartasV7',$('gList'));
 }catch(e){setStatus('✗ Error de inicio: '+e.message,false)}
 
 window.addEventListener('load',function(){
